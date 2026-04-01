@@ -4,6 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import React, { Suspense, lazy, useEffect } from "react";
 import axios from "axios";
 import { cookieExists, getCookie } from "./Helper/CookieHelper";
+import baseURL from "./BaseURL/BaseURL";
 
 import {
   Navigate,
@@ -64,7 +65,7 @@ const ProtectedRoute = ({ element, path }) => {
 async function loginWithRefreshToken() {
   try {
     const res = await axios.post(
-      `https://el-burhanacademy.azurewebsites.net/Authentication/FamilyLoginWithCookie`,
+      `${baseURL}/Authentication/FamilyLoginWithCookie`,
       {
         refreshToken: getCookie("refreshToken"),
       },
