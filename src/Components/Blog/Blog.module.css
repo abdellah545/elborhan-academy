@@ -1,0 +1,79 @@
+@import url("../../index.css");
+
+.title {
+  width: 60%;
+}
+.Card {
+  height: 147.19px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.Card:hover {
+  background-color: rgb(248, 244, 244) !important;
+}
+.ce-block__content {
+  margin: 0 20px;
+}
+
+.card-body h3 {
+  min-height: 68px !important; /* Minimum height */
+  max-height: 100px; /* Maximum height */
+  /* overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2; /* Number of lines to show */
+
+}
+
+@media only screen and (max-width: 768px) {
+  .title {
+    font-size: 10px;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.pagination button {
+  width: 5%;
+  margin: 5px;
+  border-radius: 10px;
+  height: 40px;
+  font-weight: bold;
+  border: 1px solid black;
+  transition: all 0.3s ease-in-out;
+  min-width: 80px;
+}
+.pagination button:hover {
+  background-color: rgb(196, 192, 192);
+}
+.pagination .currentPage:hover {
+  background-color: rgb(78, 77, 77);
+}
+.currentPage {
+  background-color: black;
+  color: white;
+}
+
+@media only screen and (max-width: 425px) {
+  .pagination button {
+    width: 30%;
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 768px) and (min-widthl: 425px) {
+  .pagination button {
+    width: 30%;
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .pagination button {
+    width: 10%;
+    font-size: 15px;
+  }
+}

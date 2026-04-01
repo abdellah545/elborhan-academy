@@ -1,0 +1,90 @@
+@import url("../../index.css");
+
+.signUpContainer {
+  width: 50%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 1px 3px 15px rgba(0, 0, 0, 0.5);
+  padding: 25px;
+  border-radius: 24px;
+  background: white;
+}
+
+.form .inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.Column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form input {
+  border: 1px solid #383838;
+  border-radius: 10px;
+  width: 300px;
+  height: 50px;
+  padding: 10px;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+.controlCountry,
+.controlTimezone {
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+}
+
+.form button {
+  background: #1a1a1d;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  width: 150px;
+  cursor: pointer;
+}
+
+.notSure {
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .signUpContainer {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .form {
+    width: 100%;
+  }
+
+  .form .inputs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form input {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .controlCountry,
+  .controlTimezone {
+    max-width: 320px;
+  }
+}

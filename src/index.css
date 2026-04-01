@@ -1,0 +1,277 @@
+* {
+  font-family: "Open Sans", sans-serif;
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-main: #ffffff; /* pure white was off-white before */
+  --text-main: #222222;
+  --text-muted: #6c757d;
+  --card-bg: #ffffff;
+  --navbar-bg: #ffffff;
+  --border-color: #dee2e6;
+  --btn-light-bg: #f8f9fa;
+  --btn-light-text: #000000;
+  --card-border: rgba(0,0,0,0.08);
+  --header-bg: #ffffff;
+  --accent-color: #007bff;
+}
+
+html[data-theme="dark"] {
+  --bg-main: linear-gradient(135deg, #242535 0%, #151520 100%);
+  --text-main: #ffffff;
+  --text-muted: #b3b3b3;
+  --card-bg: #2b2c3d; /* dark rich grey suitable for the site */
+  --navbar-bg: #1e1d2b;
+  --border-color: #3f4055;
+  --btn-light-bg: #3f4055;
+  --btn-light-text: #ffffff;
+  --card-border: rgba(255,255,255,0.08);
+  --header-bg: #1e1d2b;
+  --accent-color: #f172b6; 
+}
+
+body {
+  background: var(--bg-main) !important;
+  background-attachment: fixed !important;
+  color: var(--text-main) !important;
+  position: relative;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+/* Fix SVGs for Logo visibility on light mode */
+html[data-theme="light"] header img[src$=".svg"] {
+  filter: brightness(0);
+}
+
+/* Global Theme Overrides with Maximum Specificity */
+html[data-theme="dark"] body .card, 
+html[data-theme="dark"] body div[class*="card"] {
+  background-color: var(--card-bg) !important;
+  color: var(--text-main) !important;
+  border-color: var(--card-border) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Force ALL text to be light in dark mode, overcoming module CSS */
+html[data-theme="dark"] body .text-dark,
+html[data-theme="dark"] body .text-black,
+html[data-theme="dark"] body h1,
+html[data-theme="dark"] body h2,
+html[data-theme="dark"] body h3,
+html[data-theme="dark"] body h4,
+html[data-theme="dark"] body h5,
+html[data-theme="dark"] body h6,
+html[data-theme="dark"] body p,
+html[data-theme="dark"] body span,
+html[data-theme="dark"] body li,
+html[data-theme="dark"] body label,
+html[data-theme="dark"] body a,
+html[data-theme="dark"] body .nav-link,
+html[data-theme="dark"] body button,
+html[data-theme="dark"] body div[class*="title"],
+html[data-theme="dark"] body div[class*="text"],
+html[data-theme="dark"] body h5[class*="text-black"] {
+  color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] body .text-muted,
+html[data-theme="dark"] body small,
+html[data-theme="dark"] body p[class*="text-black-50"] {
+  color: var(--text-muted) !important;
+}
+
+/* Ensure Dropdowns are not blinding white */
+html[data-theme="dark"] body .dropdown-menu,
+html[data-theme="dark"] body ul.dropdown-menu {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+html[data-theme="dark"] body .dropdown-item {
+  color: var(--text-main) !important;
+  background-color: transparent !important;
+}
+
+html[data-theme="dark"] body .dropdown-item:hover {
+  background-color: var(--border-color) !important;
+}
+
+/* Make backgrounds transparent inside main layout */
+html[data-theme="dark"] body .bg-light,
+html[data-theme="dark"] body .bg-white,
+html[data-theme="dark"] body .bg-black,
+html[data-theme="dark"] body .bg-dark,
+html[data-theme="dark"] body section, 
+html[data-theme="dark"] body div[class*="bg-"],
+html[data-theme="dark"] body div[class*="bg_"] {
+  background-color: transparent !important; 
+}
+
+/* Re-enforce card background in case previous rule caught it */
+html[data-theme="dark"] body .card,
+html[data-theme="dark"] body .modal-content {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+html[data-theme="dark"] body .btn-light {
+  background-color: var(--btn-light-bg) !important;
+  color: var(--btn-light-text) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="dark"] body .btn-light:hover {
+  background-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+
+/* 1. Dropdown Menus in Dark Mode */
+html[data-theme="dark"] .dropdown-menu,
+html[data-theme="dark"] .dropdown-menu.dropdown-menu-light {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+
+html[data-theme="dark"] .dropdown-item {
+  color: var(--text-main) !important;
+  background-color: transparent !important;
+}
+
+html[data-theme="dark"] .dropdown-item:hover {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: var(--text-main) !important;
+}
+
+/* 2. Navbar - handled directly in Header.module.css */
+
+html[data-theme="dark"] body input,
+html[data-theme="dark"] body select,
+html[data-theme="dark"] body textarea {
+  background-color: var(--card-bg) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+html[data-theme="dark"] body input::placeholder,
+html[data-theme="dark"] body textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* 4. Statistics Black Icons to White */
+html[data-theme="dark"] section[class*="statistics"] img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* 5. First Section SVG Image inverted to Light in Dark Mode */
+html[data-theme="dark"] body img[src*="Kid.svg"] {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* 6. Navbar Login/Signup buttons in Dark Mode */
+html[data-theme="dark"] body button[class*="login"] {
+  background-color: #f26c6c !important; 
+  color: #ffffff !important; 
+  border-color: #f26c6c !important;
+}
+
+html[data-theme="dark"] body button[class*="signup"] {
+  background-color: #5675b8 !important;
+  color: #ffffff !important;
+  border-color: #5675b8 !important;
+}
+
+/* 7. "Why Us" section divs backgrounds */
+html[data-theme="dark"] body div[class*="__desc"] {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+}
+
+html[data-theme="dark"] body div[class*="__desc"] h5 {
+  color: var(--text-main) !important;
+}
+
+/* Global Font Size Adjustments for Responsiveness */
+html {
+  font-size: 15px; 
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 576px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Better Headings Scaling */
+h1 { font-size: 2.25rem !important; }
+h2 { font-size: 1.8rem !important; }
+h3 { font-size: 1.5rem !important; }
+h4 { font-size: 1.25rem !important; }
+h5 { font-size: 1.1rem !important; }
+h6 { font-size: 1rem !important; }
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.9rem !important; }
+  h2 { font-size: 1.5rem !important; }
+  h3 { font-size: 1.35rem !important; }
+}
+
+/* Ensure images never exceed container width and scale gracefully */
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Restrict extremely large images globally */
+section img:not([class*='logo']) {
+  max-height: 500px;
+}
+
+/* Light Animations & Transitions */
+a, button, .btn {
+  transition: all 0.3s ease-in-out !important;
+}
+
+.redirect {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999999;
+  background-color: black;
+}
+
+/* Subtle reveal class to be added via JS */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}

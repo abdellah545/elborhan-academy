@@ -1,0 +1,63 @@
+@import url("../../index.css");
+
+.bg_dark {
+  background-color: #131317;
+}
+
+/* LOGO */
+.image img {
+  width: clamp(80px, 8vw, 120px);
+  height: auto;
+  object-fit: contain;
+  margin-top: 10px;
+}
+
+/* SOCIAL */
+.socialIcons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.socialIcons i {
+  font-size: 20px;
+  transition: 0.3s;
+}
+
+.socialIcons i:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* COPYRIGHT */
+.copyRight {
+  font-size: 0.85rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.copyLink {
+  color: #fff;
+  margin-left: 5px;
+  text-decoration: underline;
+}
+
+.copyLink:hover {
+  color: #f26c7c;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  /* columns = 2 per row */
+  .row > div[class*="col-"] {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  ul {
+    text-align: center;
+  }
+
+  .copyRight {
+    font-size: 0.8rem;
+  }
+}

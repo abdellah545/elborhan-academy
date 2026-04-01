@@ -1,0 +1,14 @@
+.ce-block__content{
+
+}
+.codex-editor__redactor{
+    /* padding:0 !important; */
+    padding-bottom: 0 !important;
+
+}
+
+@media only screen and (max-width: 768px) {
+    .ce-block__content{
+        /* margin:0 20px; */
+    }
+}

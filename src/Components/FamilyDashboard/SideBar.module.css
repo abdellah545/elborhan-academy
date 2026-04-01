@@ -1,0 +1,27 @@
+.sidebar {
+  width: 100%; 
+  height: calc(100vh - 60px); 
+  background-color: #f2f2f2; 
+  overflow-x: hidden;
+  overflow-y: auto; /* Enable vertical scrolling */
+  border-right: 2px solid #ddd;
+}
+
+.sidebar-content {
+  padding: 20px;
+}
+
+.bg_gray {
+  background-color: gray;
+  color: white;
+  border-radius: 50%;
+  padding: 12px;
+  margin-right: 10px;
+}
+.btn_dark {
+  background-color: #333;
+  color: white;
+  border-radius: 10px;
+  padding: 12px;
+  /* margin-right: 10px; */
+}

@@ -1,0 +1,277 @@
+@import url("../../index.css");
+
+.headerWrapper {
+  background-color: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background-color 0.3s ease;
+}
+
+.bg {
+  background-color: #f3f3f2;
+}
+
+/* ── Dark Mode for header ────────────────────── */
+:global(html[data-theme="dark"]) .headerWrapper {
+  background-color: rgba(22, 22, 34, 0.97) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ── Dropdown menus – Light Mode ────────────── */
+:global(.dropdown-menu) {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden;
+}
+
+:global(.dropdown-item) {
+  color: #333333 !important;
+  padding: 0.55rem 1.1rem !important;
+  font-size: 0.92rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:global(.dropdown-item:hover),
+:global(.dropdown-item:focus) {
+  background-color: rgba(86, 117, 184, 0.1) !important;
+  color: #5675b8 !important;
+}
+
+:global(.dropdown-divider) {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+  margin: 0.2rem 0 !important;
+}
+
+/* ── Dropdown menus – Dark Mode ─────────────── */
+:global(html[data-theme="dark"]) :global(.dropdown-menu),
+:global(html[data-theme="dark"]) :global(.dropdown-menu-light) {
+  background-color: #1e1d30 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+:global(html[data-theme="dark"]) :global(.dropdown-item) {
+  color: #e0e0e0 !important;
+}
+
+:global(html[data-theme="dark"]) :global(.dropdown-item:hover),
+:global(html[data-theme="dark"]) :global(.dropdown-item:focus) {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  color: #a0b4e8 !important;
+}
+
+:global(html[data-theme="dark"]) :global(.dropdown-divider) {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.navbarCustom {
+  min-height: 72px;
+  padding: 0.5rem 0.75rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.brandText {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 700;
+  color: #1f1f1f;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  margin-right: 0;
+}
+
+.navList {
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+}
+
+.navButton,
+.navLink {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #222 !important;
+  padding: 0.45rem 0.7rem !important;
+  line-height: 1.2;
+}
+
+.navButton:hover,
+.navLink:hover {
+  color: #5675b8 !important;
+}
+
+.single_link {
+  padding: 0.15rem;
+}
+
+.login {
+  font-weight: 600;
+  color: #f26c6c;
+}
+
+.signup {
+  font-weight: 600;
+  color: #5675b8;
+}
+
+.contact {
+  font-weight: 600;
+  color: black;
+}
+
+.contact_btn {
+  border-radius: 12px;
+  border: 1.5px solid gray;
+  min-width: 108px;
+  height: 40px;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.9rem;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.contact_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.authLink {
+  text-decoration: none;
+}
+
+.authLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.togglerBtn {
+  border: none;
+  box-shadow: none !important;
+}
+
+.togglerBtn:focus {
+  box-shadow: none !important;
+}
+
+@media (max-width: 991.98px) {
+  .navbarCustom {
+    min-height: 64px;
+    padding: 0.55rem 0.2rem;
+  }
+
+  .brand {
+    max-width: 80%;
+  }
+
+  .brandText {
+    font-size: 1rem;
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .navCollapse {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .navList {
+    align-items: stretch;
+    gap: 0.15rem;
+  }
+
+  .navItem {
+    width: 100%;
+    display: block;
+  }
+
+  .navButton,
+  .navLink {
+    width: 100%;
+    text-align: left;
+    padding: 0.7rem 0.4rem !important;
+    font-size: 0.95rem;
+  }
+
+  .login_container,
+  .authButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    margin-top: 0.9rem;
+  }
+
+  .authLink,
+  .authLinkBtn {
+    width: 100%;
+  }
+
+  .contact_btn {
+    width: 100%;
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbarCustom {
+    min-height: 60px;
+    padding: 0.45rem 0.1rem;
+  }
+
+  .brandText {
+    font-size: 0.92rem;
+  }
+
+  .logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .navButton,
+  .navLink {
+    font-size: 0.92rem;
+  }
+
+  .contact_btn {
+    height: 38px;
+    font-size: 0.88rem;
+  }
+}

@@ -1,0 +1,215 @@
+/* .codex-editor{
+   margin: 0 50px; 
+} */
+
+.EachCourse {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.innerCourse {
+  width: 50%;
+  border: 1px solid rgb(242 239 239);
+  padding-top: 20px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+  margin: 20px;
+}
+
+.EachCourse .title {
+  width: 100%;
+  direction: rtl;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.EachCourse img {
+  width: 95%;
+  height: 600px;
+  padding-right: 35px;
+
+}
+
+.EachCourse h1 {
+  text-align: center;
+}
+
+.content {
+  direction: rtl;
+}
+
+.innerCourse a {
+  display: none !important;
+}
+
+.innerCourse ul {
+  padding-right: 30px !important;
+}
+
+.EachCourse .title p {
+  margin: 0 35px;
+  font-size: 16px;
+  margin-bottom: 10px !important;
+}
+
+.innerCourse {
+  font-size: 20px;
+}
+
+.cdx-block{
+  width: 95%;
+}
+
+.title hr{
+  color: black;
+  border: 0;
+  margin: 2% 10%;
+  border-top: var(--bs-border-width) solid;
+}
+/* =========================================================== */
+
+@media only screen and (max-width: 1558px) {
+  .innerCourse {
+    width: 50%;
+  }
+}
+/* =========================================================== */
+
+
+@media only screen and (max-width: 1534px) {
+  .innerCourse {
+    width: 60%;
+  }
+
+  .innerCourse h1,
+  .innerCourse h2 {
+    font-size: 40px;
+  }
+
+
+  .EachCourse img {
+    width: 95%;
+    height: 600px;
+    padding-right: 35px;
+  }
+}
+
+/* =========================================================== */
+
+@media only screen and (max-width: 1298px) {
+  .innerCourse {
+    width: 70%;
+  }
+
+}
+
+/* =========================================================== */
+
+
+
+@media only screen and (max-width: 1088px) {
+  .innerCourse {
+    width: 80%;
+  }
+}
+
+
+/* =========================================================== */
+
+@media only screen and (max-width: 900px) {
+  .innerCourse {
+    width: 100%;
+    font-size: 17px;
+  }
+
+  .innerCourse h1,
+  .innerCourse h2 {
+    font-size: 40px;
+  }
+
+  .innerCourse {
+    font-size: 15px;
+  }
+
+  .ce-block__content {
+    margin: 0 20px;
+  }
+
+  
+  .EachCourse img {
+    width: 95%;
+    height: 400px;
+    padding-right: 35px;
+  }
+}
+
+/* =========================================================== */
+
+@media only screen and (max-width: 670px) {
+  .innerCourse {
+    width: 100%;
+  }
+
+  .innerCourse h1,
+  .innerCourse h2 {
+    font-size: 30px;
+  }
+
+  .innerCourse {
+    font-size: 15px;
+  }
+
+  .ce-block__content {
+    margin: 0 20px;
+  }
+
+  .content{
+    padding: 20px !important;
+  }
+
+  .EachCourse img {
+    width: 95%;
+    height: 200px;
+    padding-right: 35px;
+  }
+
+  .EachCourse .title p {
+    margin: 0 35px;
+    font-size: 12px;
+  }
+}
+
+/* =========================================================== */
+
+@media only screen and (max-width: 670px) {
+
+  .EachCourse img {
+
+    padding-right: 30px;
+  }
+  
+  .EachCourse .title p {
+    margin: 0 30px;
+  }
+}
+/* =========================================================== */
+
+@media only screen and (max-width: 442px) {
+  
+  .EachCourse img {
+    padding-right: 15px;
+  }
+
+  .EachCourse .title p {
+    margin: 0 20px;
+  }
+
+  .innerCourse h1,
+  .innerCourse h2 {
+    font-size: 21px;
+  }
+}

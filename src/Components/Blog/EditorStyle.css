@@ -1,0 +1,25 @@
+.codex-editor__redactor {
+    margin: 0 !important;
+}
+
+.ce-paragraph {
+    display: contents;
+
+}
+
+.ce-block__content {
+    margin: -3px 10px;
+}
+
+.ce-header {
+    padding: 0em 0 3px;
+    margin-top: -5px;
+    margin-right: -20px;
+    margin-left: -20px;
+
+
+    line-height: 1.25em;
+    outline: none;
+    font-size: 26px;
+    font-weight: bold;
+}

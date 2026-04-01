@@ -1,0 +1,165 @@
+.scholarShips {
+  padding-top: 40px;
+  max-width: 1100px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.TitleImgContainer {
+  flex: 0 0 300px;
+  padding: 30px;
+  border-radius: 50%;
+  background-color: #f8f9fa;
+  transition: background 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .TitleImgContainer {
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(86, 117, 184, 0.05) 50%,
+    transparent 80%
+  );
+}
+
+:global(html[data-theme="dark"]) .scholarMainImg {
+  filter: brightness(1.1) contrast(1.1);
+}
+
+.scholarMainImg {
+  width: 100%;
+  height: auto;
+}
+
+.ScholartitleContent {
+  font-size: clamp(1.1rem, 1.3vw, 1.25rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+.scholarShipsHeader {
+  text-align: center;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: var(--accent-color);
+  margin: 20px 0 10px;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+  padding: 20px 40px; /* Added padding for better containment */
+  justify-items: center; /* Center items within grid cells */
+  justify-content: center; /* Center the grid itself */
+}
+
+/* Ensure that if there are fewer cards in the last row, they stay centered */
+@media (min-width: 992px) {
+  .cardsGrid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .content {
+    flex: 0 0 calc(33.333% - 30px);
+    height: auto;
+  }
+}
+@media (max-width: 991px) and (min-width: 600px) {
+  .cardsGrid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .content {
+    flex: 0 0 calc(50% - 30px);
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: var(--card-bg);
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px var(--card-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+:global(html[data-theme="dark"]) .content:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.contentImg {
+  width: 70px;
+  height: 70px;
+  padding: 15px;
+  background-color: #f0f2f5;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s ease, filter 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .contentImg {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+:global(html[data-theme="dark"]) .contentImg img {
+  filter: brightness(0) invert(1);
+}
+
+.offers {
+  font-size: 1.15rem;
+  margin: 0;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+@media (max-width: 992px) {
+  .title {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .ScholartitleContent {
+    text-align: center !important;
+  }
+  
+  .TitleImgContainer {
+    flex: 0 0 200px;
+    width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .contents {
+    grid-template-columns: 1fr;
+  }
+  
+  .scholarShipsHeader {
+    font-size: 1.8rem;
+  }
+}

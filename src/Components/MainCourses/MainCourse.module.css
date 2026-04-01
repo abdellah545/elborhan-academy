@@ -1,0 +1,377 @@
+.img_size {
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+}
+
+.course_name_img {
+  width: 100%;
+  max-width: 430px;
+  height: auto;
+  display: block;
+  z-index: 2;
+}
+
+.course_section {
+  padding-top: 20px;
+  padding-bottom: 50px;
+}
+
+.course_header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 30px;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+/* Subtle background gradient for the name image */
+:global(html[data-theme="dark"]) .course_header {
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(86, 117, 184, 0.03) 60%,
+    transparent 85%
+  );
+}
+
+.course_title {
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  font-weight: 700;
+  color: #222;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .course_title {
+  color: #ffffff;
+}
+
+.islamic_header_fix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.course_img_container {
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: -35px;
+}
+
+.course_img {
+  margin: 20px 0;
+}
+
+.course_description {
+  margin-top: 24px;
+}
+
+.course_text_box {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 30px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .course_text_box {
+  background-color: var(--card-bg, #2b2c3d);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.course_paragraph {
+  font-size: 1rem;
+  line-height: 1.95;
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .course_paragraph {
+  color: #e0e0e0;
+}
+
+.course_divider {
+  margin: 1.5rem 0;
+  opacity: 0.15;
+}
+
+:global(html[data-theme="dark"]) .course_divider {
+  border-color: rgba(255, 255, 255, 0.1);
+  opacity: 0.3;
+}
+
+.section_subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #d62828;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+:global(html[data-theme="dark"]) .section_subtitle {
+  color: #ff4d4d;
+}
+
+.course_list {
+  column-count: 2;
+  column-gap: 30px;
+  padding-left: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+.course_list li {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 0.8rem;
+  color: #333;
+  break-inside: avoid;
+  transition: color 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .course_list li {
+  color: #dcdcdc;
+}
+
+.course_link_wrapper {
+  margin-top: 2rem;
+  padding-top: 0.5rem;
+}
+
+.course_link {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  color: #333;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+:global(html[data-theme="dark"]) .course_link {
+  color: #ffffff;
+}
+
+.text_color {
+  color: #007bff;
+}
+
+:global(html[data-theme="dark"]) .text_color {
+  color: var(--accent-color, #f172b6);
+}
+
+.course_link:hover {
+  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+.bg_dark {
+  background-color: #1a1a1d;
+}
+
+.a_decoration {
+  text-decoration: none;
+}
+
+@media (max-width: 992px) {
+  .course_name_img {
+    max-width: 390px;
+  }
+
+  .course_text_box {
+    padding: 25px 20px;
+  }
+
+  .course_description {
+    margin-top: 20px;
+  }
+
+  .course_img_container {
+    margin-left: -20px;
+  }
+
+  .course_header {
+    background: none !important;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .img_size {
+    width: 95px;
+  }
+
+  .course_name_img {
+    max-width: 330px;
+  }
+
+  .course_title {
+    line-height: 1.7;
+  }
+
+  .course_paragraph {
+    font-size: 0.96rem;
+    line-height: 1.85;
+  }
+
+  .course_text_box {
+    border-radius: 16px;
+    padding: 20px 16px;
+  }
+
+  .course_list {
+    column-count: 1;
+    padding-left: 1rem;
+  }
+
+  .course_img_container {
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .course_header {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .course_section {
+    padding-bottom: 35px;
+  }
+
+  .img_size {
+    width: 88px;
+  }
+
+  .course_name_img {
+    max-width: 280px;
+  }
+
+  .course_description {
+    margin-top: 18px;
+  }
+
+  .course_title {
+    font-size: 1.05rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .course_paragraph {
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+
+  .course_text_box {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .course_link {
+    font-size: 0.98rem;
+  }
+
+  .section_subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .course_list li {
+    font-size: 0.92rem;
+    margin-bottom: 0.55rem;
+    line-height: 1.7;
+  }
+}
+
+/* TIMELINE */
+
+.timeline {
+  position: relative;
+  margin: 25px 0;
+  padding-left: 20px;
+  border-left: 2px solid #ddd;
+}
+
+:global(html[data-theme="dark"]) .timeline {
+  border-left-color: #444;
+}
+
+.timeline_item {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.timeline_dot {
+  position: absolute;
+  left: -11px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background-color: #d62828;
+  border-radius: 50%;
+}
+
+:global(html[data-theme="dark"]) .timeline_dot {
+  background-color: #ff4d4d;
+}
+
+.timeline_content {
+  background: #f9f9f9;
+  padding: 12px 15px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .timeline_content {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.timeline_content h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #d62828;
+  margin-bottom: 5px;
+}
+
+:global(html[data-theme="dark"]) .timeline_content h4 {
+  color: #ff4d4d;
+}
+
+.timeline_content p {
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  line-height: 1.8;
+}
+
+:global(html[data-theme="dark"]) .timeline_content p {
+  color: #dcdcdc;
+}
+
+@media (max-width: 576px) {
+  .timeline {
+    padding-left: 15px;
+  }
+
+  .timeline_dot {
+    width: 10px;
+    height: 10px;
+    left: -9px;
+  }
+
+  .timeline_content h4 {
+    font-size: 1rem;
+  }
+
+  .timeline_content p {
+    font-size: 0.9rem;
+  }
+}

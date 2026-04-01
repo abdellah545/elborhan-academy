@@ -1,0 +1,55 @@
+.header {
+   font-size: 60px;
+  font-weight: 700;
+  filter: drop-shadow(10px 5px 20px #00000070);
+  transition: color 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .header {
+  color: #ffffff;
+}
+
+.course{
+  width:fit-content
+}
+
+/* Gradient background for the course banner images */
+.cardImgWrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:global(html[data-theme="dark"]) .cardImgWrapper {
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    rgba(86, 117, 184, 0.03) 65%,
+    transparent 90%
+  );
+}
+
+/* Card dark mode styling */
+.Card {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .Card h4 {
+  color: #ffffff !important;
+}
+
+:global(html[data-theme="dark"]) .Card hr {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dont't touch this */
+.cardImg{
+  width:181px !important;
+  min-width: 181px !important;
+  height:181px !important;
+}
+

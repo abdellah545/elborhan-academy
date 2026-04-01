@@ -1,0 +1,23 @@
+@import url("../../index.css");
+
+.bg{
+  background-color: #ffceb4;
+}
+
+.cardBorder {
+  box-shadow: 0px 5px 20px 1px gray;
+  border: none;
+  border-radius: 15px;
+}
+
+.font_size {
+  font-size: 70px;
+  font-weight: 900;
+  color: black;
+}
+
+.font__size {
+  font-size: 40px;
+  font-weight: 900;
+  color: black;
+}

@@ -1,0 +1,207 @@
+.teachingMethod {
+  padding-top: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.title h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--accent-color);
+  margin-bottom: 30px;
+}
+
+.title h3 {
+  font-size: clamp(1.1rem, 1.3vw, 1.35rem);
+  line-height: 1.8;
+  color: var(--text-main);
+  max-width: 900px;
+  margin: 0 auto !important;
+}
+
+.content {
+  width: 100%;
+}
+
+.topdivider {
+  width: 100%;
+  background: none;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 40px;
+  margin-top: 20px;
+}
+
+.card {
+  flex: 0 0 calc(33.333% - 30px);
+  min-width: 300px;
+  background-color: var(--card-bg);
+  padding: 40px 30px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px var(--card-border);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-color);
+}
+
+:global(html[data-theme="dark"]) .card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.iconWrapper {
+  width: 70px;
+  height: 70px;
+  background-color: #f0f2f5;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  transition: background 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .iconWrapper {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.iconWrapper img {
+  width: 32px !important;
+  margin-bottom: 0 !important;
+}
+
+.readMoreBtn {
+  background: none;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  margin-top: auto;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.readMoreBtn:hover {
+  background-color: var(--accent-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* --- Native Modal Styles (No Libraries) --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modalContent {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 25px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: modalPop 0.3s ease-out;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: var(--text-main);
+  cursor: pointer;
+  line-height:1;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 15px;
+}
+
+.modalHeader h3 {
+  color: var(--accent-color);
+  margin: 0;
+  font-weight: 700;
+}
+
+.modalBody {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-main);
+  text-align: left;
+}
+
+/* Cleanup for old structure */
+.card h5 {
+  font-size: 1.4rem;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-main);
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .card {
+    flex: 0 0 calc(50% - 30px);
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex: 0 0 100%;
+    margin: 0;
+  }
+  .cards {
+    padding: 20px;
+  }
+}
