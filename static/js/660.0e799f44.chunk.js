@@ -1,0 +1,2 @@
+"use strict";(globalThis.webpackChunkelborhan_academy=globalThis.webpackChunkelborhan_academy||[]).push([[660],{9660(a,c,e){e.d(c,{A:()=>b});e(5043);const b=e.p+"static/media/Borhan-logo.17c79ceb8ad7fd49abaad27429f15427.svg"}}]);
+//# sourceMappingURL=660.0e799f44.chunk.js.map

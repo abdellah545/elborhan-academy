@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 575.42px;
+        fill: #f26c7c;
+        font-family: Al-QuranAlKareem;
+        text-transform: uppercase;
+      }
+    </style>
+  </defs>
+  <text id="ع" class="cls-1" transform="translate(198.737 369.186) scale(1.098)">ع</text>
+</svg>

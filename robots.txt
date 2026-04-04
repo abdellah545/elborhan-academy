@@ -1,0 +1,8 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /FamilyDashboard/
+Disallow: /payment-report/
+Disallow: /profile/
+Disallow: /reset-password/
+
+Sitemap: https://elburhan-academy.com/sitemap.xml
