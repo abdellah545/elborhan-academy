@@ -56,7 +56,7 @@ export default function IslamicCourse() {
                   src={islamic_img}
                   alt="Islamic Illustration"
                   className={`img-fluid ${style.img_size}`}
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                 />
               </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import style from "./Header.module.css";
 import logo from "../../assets/footerAssets/Borhan-logo.svg";
 import { cookieExists, deleteCookie } from "../../Helper/CookieHelper";
@@ -7,6 +7,17 @@ import "animate.css";
 
 export default function Header() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Auto-close navbar collapse on route change (Mobile)
+    const navbarCollapse = document.getElementById("navbarNavDropdown");
+    if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+      // Create a dummy click on the toggler or use native Bootstrap hide if available
+      const toggler = document.querySelector(`.${style.togglerBtn}`);
+      if (toggler) toggler.click();
+    }
+  }, [pathname]);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

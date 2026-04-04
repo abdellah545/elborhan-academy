@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Footer from "../footer/footer";
+import style from "./JoinAsTeacher.module.css";
 import layerImage from "./Form-Assets/Layer 37.png";
 import { Link } from "react-router-dom";
 import { Form, Row, Col } from "react-bootstrap";
@@ -12,6 +13,51 @@ import axios from "axios";
 import baseURL from "../../BaseURL/BaseURL";
 
 const animatedComponents = makeAnimated();
+
+const GenderOptions = [
+  { value: "MALE", label: "Male" },
+  { value: "FEMALE", label: "Female" },
+];
+
+const LevelOptions = [
+  { value: "Beginner", label: "Beginner" },
+  { value: "Intermediate", label: "Intermediate" },
+  { value: "Advanced", label: "Advanced" },
+];
+
+const GradeOptions = [
+  { value: "A_Plus", label: "A+" },
+  { value: "A", label: "A" },
+  { value: "A_Minus", label: "A-" },
+  { value: "B_Plus", label: "B+" },
+  { value: "B", label: "B" },
+  { value: "C_Plus", label: "C+" },
+  { value: "C", label: "C" },
+];
+
+const JobTypeOptions = [
+  { value: "Part_Time", label: "Part Time" },
+  { value: "Full_Time", label: "Full Time" },
+];
+
+const AvailableTimeOptions = [
+  { value: "Morning", label: "Morning" },
+  { value: "Night", label: "Night" },
+];
+
+const PreferredAgeOptions = [
+  { value: "From_5to10", label: "5-10" },
+  { value: "From_11to20", label: "11-20" },
+  { value: "From_21toBigger", label: "21 or above" },
+];
+
+const HearAboutUsOptions = [
+  { value: "Search_Engine", label: "Search Engine" },
+  { value: "Social_Media", label: "Social Media" },
+  { value: "Recommended_By_Friend", label: "Recommended By Friend" },
+  { value: "Blog", label: "Blog" },
+  { value: "Other", label: "Other" },
+];
 
 export default function JoinAsTeacher() {
   const {
@@ -28,20 +74,72 @@ export default function JoinAsTeacher() {
   const ijazahRef = useRef();
   const [loading, setLoading] = useState(false);
 
+  // Theme-aware styles for React-Select
+  const [isDark, setIsDark] = useState(document.documentElement.getAttribute("data-theme") === "dark");
+
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "data-theme") {
+          setIsDark(document.documentElement.getAttribute("data-theme") === "dark");
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
+
   const comboStyles = {
     container: (provided) => ({
       ...provided,
       width: "100%",
-      marginBottom: "11px",
+    }),
+    control: (base, state) => ({
+      ...base,
+      backgroundColor: isDark ? "rgba(255, 255, 255, 0.03)" : "var(--bg-main)",
+      borderColor: "var(--border-color)",
+      borderWidth: "2px",
+      borderRadius: "12px",
+      minHeight: "52px",
+      boxShadow: state.isFocused ? "0 0 0 4px rgba(0, 123, 255, 0.1)" : "none",
+      "&:hover": {
+        borderColor: "var(--accent-color)"
+      }
     }),
     menu: (provided) => ({
       ...provided,
-      width: "100%",
+      backgroundColor: "var(--card-bg)",
       zIndex: "99",
+      borderRadius: "12px",
+      border: "1px solid var(--border-color)",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.2)"
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused ? "var(--btn-light-bg)" : "transparent",
+      color: "var(--text-main)",
+      "&:active": {
+        backgroundColor: "var(--accent-color)",
+        color: "white"
+      }
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: "var(--text-main)"
+    }),
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: "var(--btn-light-bg)",
+      borderRadius: "6px"
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: "var(--text-main)"
     }),
     placeholder: (styles) => ({
       ...styles,
-      color: "black",
+      color: "var(--text-muted)",
     }),
   };
 
@@ -140,15 +238,17 @@ export default function JoinAsTeacher() {
     <>
       <section>
         <div className="container">
-          <header className="d-flex justify-content-center mt-5">
-            <img
-              src={layerImage}
-              className="img-fluid align-items-md-center"
-              alt=""
-            />
-            <div className="desc px-3">
-              <h1 className="fw-bold">Join Us As a Teacher</h1>
-              <p className="fs-5">
+          <header className={`${style.joinHeader} mt-5`}>
+            <div className={style.imageWrapper}>
+              <img
+                src={layerImage}
+                className={style.teacherImage}
+                alt="Join Us"
+              />
+            </div>
+            <div className="desc">
+              <h1 className="fw-bold display-4 mb-3">Join Us As a Teacher</h1>
+              <p className="fs-5 text-muted">
                 Ready to inspire and educate? join our community <br /> as a
                 teacher! Fill out the form below to get started. <br />
                 Let’s shape the future together.
@@ -157,17 +257,18 @@ export default function JoinAsTeacher() {
           </header>
         </div>
         <div className="container">
-          <div className="row">
-            <div className="form_container p-5 border shadow rounded mb-5">
+          <div className="row justify-content-center">
+            <div className={`${style.formContainer} col-lg-10`}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="firstName" className={style.formLabel}>First Name</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="firstName"
-                        placeholder="First Name"
+                        placeholder="e.g. John"
                         {...register("firstName", {
                           required: "First Name is required",
                           pattern: {
@@ -177,20 +278,20 @@ export default function JoinAsTeacher() {
                         })}
                       />
                       {errors.firstName && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.firstName.message}
                         </p>
                       )}
-                      <label htmlFor="firstName">First Name</label>
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="lastName" className={style.formLabel}>Last Name</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="lastName"
-                        placeholder="Last Name"
+                        placeholder="e.g. Doe"
                         {...register("lastName", {
                           required: "Last Name is required",
                           pattern: {
@@ -200,18 +301,18 @@ export default function JoinAsTeacher() {
                         })}
                       />
                       {errors.lastName && (
-                        <p className="text-danger">{errors.lastName.message}</p>
+                        <p className="text-danger mt-1 small">{errors.lastName.message}</p>
                       )}
-                      <label htmlFor="lastName">Last Name</label>
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="email" className={style.formLabel}>Email Address</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="email"
-                        placeholder="Email"
+                        placeholder="email@example.com"
                         {...register("email", {
                           required: "Email is required",
                           pattern: {
@@ -221,18 +322,18 @@ export default function JoinAsTeacher() {
                         })}
                       />
                       {errors.email && (
-                        <p className="text-danger">{errors.email.message}</p>
+                        <p className="text-danger mt-1 small">{errors.email.message}</p>
                       )}
-                      <label htmlFor="email">Email</label>
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="whatsAppNumber" className={style.formLabel}>Whatsapp Number</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="whatsAppNumber"
-                        placeholder="Whatsapp Number"
+                        placeholder="+1 234 567 890"
                         {...register("whatsAppNumber", {
                           required: "Phone number is required",
                           minLength: {
@@ -251,65 +352,68 @@ export default function JoinAsTeacher() {
                         })}
                       />
                       {errors.whatsAppNumber && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.whatsAppNumber.message}
                         </p>
                       )}
-                      <label htmlFor="whatsAppNumber">Whatsapp Number</label>
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
                     <div className="row">
-                      <div className="col-lg-3 col-md-12">
-                        <div className="form-floating mb-3">
+                      <div className="col-lg-4 col-md-12">
+                        <div className="form-group mb-4">
+                          <label htmlFor="age" className={style.formLabel}>Age</label>
                           <input
                             type="text"
-                            className="form-control"
+                            className={`form-control ${style.formInput}`}
                             id="age"
                             placeholder="Age"
-                            maxLength={2}
+                            maxLength={3}
                             {...register("age", {
                               required: "Age is required",
                               pattern: {
-                                value: /^(?!0+$)\d{1,2}$/,
+                                value: /^(?!0+$)\d{1,3}$/,
                                 message:
-                                  "Age should be a number between 1 and 99",
+                                  "Age should be a valid number",
                               },
                             })}
                           />
                           {errors.age && (
-                            <p className="text-danger">{errors.age.message}</p>
+                            <p className="text-danger mt-1 small">{errors.age.message}</p>
                           )}
-                          <label htmlFor="age">Age</label>
                         </div>
                       </div>
-                      <div className="col-lg-9 col-md-12">
-                        <div className="form-floating mb-3">
-                          <select
-                            id="gender"
-                            className="form-select"
-                            {...register("gender", {
-                              required: "Please select a gender",
-                            })}
-                          >
-                            <option value="" disabled>
-                              Select Gender
-                            </option>
-                            <option value="MALE">Male</option>
-                            <option value="FEMALE">Female</option>
-                          </select>
+                      <div className="col-lg-8 col-md-12">
+                        <div className="form-group mb-4">
+                          <label htmlFor="gender" className={style.formLabel}>Gender</label>
+                          <Controller
+                            name="gender"
+                            control={control}
+                            rules={{ required: "Please select a gender" }}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                inputId="gender"
+                                options={GenderOptions}
+                                placeholder="Select Gender"
+                                styles={comboStyles}
+                                onChange={(val) => field.onChange(val.value)}
+                                value={GenderOptions.find(opt => opt.value === field.value)}
+                              />
+                            )}
+                          />
                           {errors.gender && (
-                            <p className="text-danger">
+                            <p className="text-danger mt-1 small">
                               {errors.gender.message}
                             </p>
                           )}
-                          <label htmlFor="gender">Gender</label>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label className={style.formLabel}>Languages</label>
                       <Controller
                         name="languages"
                         control={control}
@@ -329,7 +433,7 @@ export default function JoinAsTeacher() {
                         )}
                       />
                       {errors.languages && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.languages.message}
                         </p>
                       )}
@@ -337,81 +441,86 @@ export default function JoinAsTeacher() {
                   </div>
                   {Object.keys(languageLevels).map((language) => (
                     <div className="col-lg-6 col-md-12 mb-4" key={language}>
-                      <div className="form-floating mb-3">
-                        <select
-                          className="form-select"
-                          id="level"
-                          {...register(language, {
-                            required: "Level is required",
-                          })}
-                          value={languageLevels[language]}
-                          onChange={(e) =>
-                            handleLevelChange(e.target.value, language)
-                          }
-                        >
-                          <option value="" disabled>
-                            Select Level
-                          </option>
-                          <option value="Beginner">Beginner</option>
-                          <option value="Intermediate">Intermediate</option>
-                          <option value="Advanced">Advanced</option>
-                        </select>
+                      <div className="form-group mb-4">
+                        <label className={style.formLabel}>{language} Level</label>
+                        <Controller
+                          name={language}
+                          control={control}
+                          rules={{ required: "Level is required" }}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              options={LevelOptions}
+                              placeholder="Select Level"
+                              styles={comboStyles}
+                              onChange={(val) => {
+                                field.onChange(val.value);
+                                handleLevelChange(val.value, language);
+                              }}
+                              value={LevelOptions.find(opt => opt.value === field.value) || LevelOptions.find(opt => opt.value === languageLevels[language])}
+                            />
+                          )}
+                        />
                         {errors[language] && (
-                          <p className="text-danger">
+                          <p className="text-danger mt-1 small">
                             {errors[language].message}
                           </p>
                         )}
-                        <label htmlFor="level">{language} Level</label>
                       </div>
                     </div>
                   ))}
                   <div className="col-lg-6 col-md-12">
-                    <div className="row">
-                      <div className="col-lg-3 col-md-6">
-                        <div>
-                          <label htmlFor="ijazah">Ijazah:</label>
+                    <div className="row align-items-end">
+                      <div className="col-lg-4 col-md-6 mb-4">
+                        <div className={style.formLabel}>Ijazah:</div>
+                        <div className="d-flex gap-3 mt-2">
+                          <div className="form-check">
+                            <input
+                              type="radio"
+                              id="ijazah-yes"
+                              className="form-check-input"
+                              name="ijazah"
+                              value="yes"
+                              onChange={handleIjazahChange}
+                            />
+                            <label
+                              htmlFor="ijazah-yes"
+                              className="form-check-label"
+                            >
+                              Yes
+                            </label>
+                          </div>
+                          <div className="form-check">
+                            <input
+                              type="radio"
+                              id="ijazah-no"
+                              className="form-check-input"
+                              name="ijazah"
+                              value="no"
+                              onChange={handleIjazahChange}
+                              defaultChecked
+                            />
+                            <label htmlFor="ijazah-no" className="form-check-label">No</label>
+                          </div>
                         </div>
-                        <input
-                          type="radio"
-                          id="ijazah-yes"
-                          name="ijazah"
-                          value="yes"
-                          onChange={handleIjazahChange}
-                        />
-                        <label
-                          htmlFor="ijazah-yes"
-                          style={{ marginRight: "10px" }}
-                        >
-                          Yes
-                        </label>
-                        <input
-                          type="radio"
-                          id="ijazah-no"
-                          name="ijazah"
-                          value="no"
-                          onChange={handleIjazahChange}
-                        />
-                        <label htmlFor="ijazah-no">No</label>
                       </div>
-                      <div className="col-lg-9 col-md-12">
-                        <div className="form-floating mb-3">
+                      <div className="col-lg-8 col-md-12">
+                        <div className="form-group mb-4">
+                          <label htmlFor="ijazahFile" className={style.formLabel}>Ijazah File</label>
                           <input
                             type="file"
                             accept=".pdf, .docx, .png, .jpeg, .jpg"
-                            className="form-control"
+                            className={`form-control ${style.formInput}`}
                             id="ijazahFile"
-                            placeholder="Ijazah File"
                             disabled={!ijazahEnabled}
-                            onChange={(e) => setIjazah(e.target.value)}
                             {...register("ijazahFile", {
                               required: ijazahEnabled
                                 ? "Ijazah file is required"
                                 : false,
                             })}
                           />
-                          <label htmlFor="ijazahFile">Ijazah File</label>
                           {errors.ijazahFile && (
-                            <p className="text-danger">
+                            <p className="text-danger mt-1 small">
                               {errors.ijazahFile.message}
                             </p>
                           )}
@@ -422,55 +531,50 @@ export default function JoinAsTeacher() {
                   <div className="col-lg-6 col-md-12">
                     <div className="row">
                       <div className="col-lg-6 col-md-12">
-                        <div className="form-floating mb-3">
-                          <select
-                            type="text"
-                            id="grade"
-                            className="form-select"
-                            placeholder="Grade"
-                            {...register("grade", {
-                              required: "Please select your grade",
-                            })}
-                          >
-                            <option value="" disabled>
-                              Select Your Grade
-                            </option>
-                            <option value="A_Plus">A+</option>
-                            <option value="A">A</option>
-                            <option value="A_Minus">A-</option>
-                            <option value="B_Plus">B+</option>
-                            <option value="B">B</option>
-                            <option value="C_Plus">C+</option>
-                            <option value="C">C</option>
-                          </select>
-                          <label htmlFor="grade">Grade</label>
+                        <div className="form-group mb-4">
+                          <label className={style.formLabel}>Your Grade</label>
+                          <Controller
+                            name="grade"
+                            control={control}
+                            rules={{ required: "Grade is required" }}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={GradeOptions}
+                                placeholder="Select Your Grade"
+                                styles={comboStyles}
+                                onChange={(val) => field.onChange(val.value)}
+                                value={GradeOptions.find(opt => opt.value === field.value)}
+                              />
+                            )}
+                          />
                           {errors.grade && (
-                            <p className="text-danger">
+                            <p className="text-danger mt-1 small">
                               {errors.grade.message}
                             </p>
                           )}
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-12">
-                        <div className="form-floating mb-3">
-                          <select
-                            type="text"
-                            id="jobType"
-                            className="form-select"
-                            placeholder="Job Type"
-                            {...register("jobType", {
-                              required: "Please select your job type",
-                            })}
-                          >
-                            <option value="" disabled>
-                              Select Job Type
-                            </option>
-                            <option value="Part_Time">Part Time</option>
-                            <option value="Full_Time">Full Time</option>
-                          </select>
-                          <label htmlFor="jobType">Job Type</label>
+                        <div className="form-group mb-4">
+                          <label className={style.formLabel}>Job Type</label>
+                          <Controller
+                            name="jobType"
+                            control={control}
+                            rules={{ required: "Job type is required" }}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                options={JobTypeOptions}
+                                placeholder="Select Job Type"
+                                styles={comboStyles}
+                                onChange={(val) => field.onChange(val.value)}
+                                value={JobTypeOptions.find(opt => opt.value === field.value)}
+                              />
+                            )}
+                          />
                           {errors.jobType && (
-                            <p className="text-danger">
+                            <p className="text-danger mt-1 small">
                               {errors.jobType.message}
                             </p>
                           )}
@@ -479,66 +583,64 @@ export default function JoinAsTeacher() {
                     </div>
                   </div>
                   <div className="col-lg-12 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="educationField" className={style.formLabel}>Education Field</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="educationField"
-                        placeholder="Education Field"
+                        placeholder="e.g. Islamic Studies"
                         {...register("educationField", {
                           required: "Please enter your education field",
                         })}
                       />
-                      <label htmlFor="educationField">Education Field</label>
                       {errors.educationField && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.educationField.message}
                         </p>
                       )}
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="anotherJob" className={style.formLabel}>Another job? Where?</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="anotherJob"
-                        placeholder="Do you have another job? Where?"
+                        placeholder="Current occupation..."
                         {...register("anotherJob", {
                           required:
                             "Please specify if you have another job and where",
                         })}
                       />
-                      <label htmlFor="anotherJob">
-                        Do you have another job? Where?
-                      </label>
                       {errors.anotherJob && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.anotherJob.message}
                         </p>
                       )}
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
-                      <select
-                        type="text"
-                        id="availableTime"
-                        className="form-select"
-                        placeholder="Available Time"
-                        {...register("availableTime", {
-                          required: "Please select your available time",
-                        })}
-                      >
-                        <option value="" disabled>
-                          Select Available Time
-                        </option>
-                        <option value="Morning">Morning</option>
-                        <option value="Night">Night</option>
-                      </select>
-                      <label htmlFor="availableTime">Available Time</label>
+                    <div className="form-group mb-4">
+                      <label className={style.formLabel}>Available Time</label>
+                      <Controller
+                        name="availableTime"
+                        control={control}
+                        rules={{ required: "Available time is required" }}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={AvailableTimeOptions}
+                            placeholder="Select Available Time"
+                            styles={comboStyles}
+                            onChange={(val) => field.onChange(val.value)}
+                            value={AvailableTimeOptions.find(opt => opt.value === field.value)}
+                          />
+                        )}
+                      />
                       {errors.availableTime && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.availableTime.message}
                         </p>
                       )}
@@ -547,58 +649,62 @@ export default function JoinAsTeacher() {
                   <div className="col-lg-6 col-md-12">
                     <div className="row">
                       <div className="col-lg-6 col-md-12">
-                        <div className="form-floating mb-3">
+                        <div className="form-group mb-4">
+                          <label htmlFor="yearsOfExperience" className={style.formLabel}>Years of Experience</label>
                           <input
                             type="number"
-                            className="form-control"
+                            className={`form-control ${style.formInput}`}
                             id="yearsOfExperience"
-                            placeholder="Years of Experience"
+                            placeholder="0"
                             min={0}
                             {...register("yearsOfExperience", {
                               required: "Please enter your years of experience",
                             })}
                           />
-                          <label htmlFor="yearsOfExperience">
-                            Years of Experience
-                          </label>
                           {errors.yearsOfExperience && (
-                            <p className="text-danger">
+                            <p className="text-danger mt-1 small">
                               {errors.yearsOfExperience.message}
                             </p>
                           )}
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-12">
-                        <div>
-                          <label htmlFor="isGraduated">Education Status:</label>
+                        <div className={style.formLabel}>Education Status:</div>
+                        <div className="d-flex gap-3 mt-2">
+                          <div className="form-check">
+                            <input
+                              type="radio"
+                              id="graduated"
+                              className="form-check-input"
+                              name="educationStatus"
+                              value="true"
+                              {...register("isGraduated", {
+                                required: "Education status is required",
+                              })}
+                            />
+                            <label
+                              htmlFor="graduated"
+                              className="form-check-label"
+                            >
+                              Graduated
+                            </label>
+                          </div>
+                          <div className="form-check">
+                            <input
+                              type="radio"
+                              id="student"
+                              className="form-check-input"
+                              name="educationStatus"
+                              value="false"
+                              {...register("isGraduated", {
+                                required: "Education status is required",
+                              })}
+                            />
+                            <label htmlFor="student" className="form-check-label">Student</label>
+                          </div>
                         </div>
-                        <input
-                          type="radio"
-                          id="graduated"
-                          name="educationStatus"
-                          value="true"
-                          {...register("isGraduated", {
-                            required: "Education status is required",
-                          })}
-                        />
-                        <label
-                          htmlFor="graduated"
-                          style={{ marginRight: "10px" }}
-                        >
-                          Graduated
-                        </label>
-                        <input
-                          type="radio"
-                          id="student"
-                          name="educationStatus"
-                          value="false"
-                          {...register("isGraduated", {
-                            required: "Education status is required",
-                          })}
-                        />
-                        <label htmlFor="student">Student</label>
                         {errors.isGraduated && (
-                          <p className="text-danger">
+                          <p className="text-danger mt-1 small">
                             {errors.isGraduated.message}
                           </p>
                         )}
@@ -606,75 +712,72 @@ export default function JoinAsTeacher() {
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
-                      <select
-                        type="text"
-                        id="preferredAgeToTeach"
-                        className="form-select"
-                        placeholder="Preferred age group to teach"
-                        {...register("preferredAgeToTeach", {
-                          required:
-                            "Please select your preferred age group to teach",
-                        })}
-                      >
-                        <option value="" disabled>
-                          Choose a group
-                        </option>
-                        <option value="From_5to10">5-10</option>
-                        <option value="From_11to20">11-20</option>
-                        <option value="From_21toBigger">21 or above</option>
-                      </select>
-                      <label htmlFor="preferredAgeToTeach">
-                        Preferred age group to teach
-                      </label>
+                    <div className="form-group mb-4">
+                      <label className={style.formLabel}>Preferred age group</label>
+                      <Controller
+                        name="preferredAgeToTeach"
+                        control={control}
+                        rules={{ required: "Preferred age group is required" }}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={PreferredAgeOptions}
+                            placeholder="Choose a group"
+                            styles={comboStyles}
+                            onChange={(val) => field.onChange(val.value)}
+                            value={PreferredAgeOptions.find(opt => opt.value === field.value)}
+                          />
+                        )}
+                      />
                       {errors.preferredAgeToTeach && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.preferredAgeToTeach.message}
                         </p>
                       )}
                     </div>
                   </div>
                   <div className="col-lg-12">
-                    <h2>Video Demo:</h2>
-                    <p className="fs-5">
-                      Explanation of "Al-Sukun" in your language and Arabic,
-                      Explanation of performing Salah in your language and
-                      Arabic and reading the first 5 verses of "Sura Younes".
-                    </p>
-                    <div className="form-floating mb-3">
-                      <input
-                        type="file"
-                        accept="video/mp4, video/mov, video/avi, video/mkv, video/m4v"
-                        className="form-control"
-                        id="demoVideoFile"
-                        {...register("demoVideoFile", {
-                          required: "Video file is required",
-                          validate: {
-                            maxFileSize: (value) => {
-                              if (value && value.length > 0) {
-                                return value[0].size <= 52428800 || "File size should be less than 50MB";
-                              }
-                              return true;
+                    <div className={style.videoSection}>
+                      <h3 className="fw-bold mb-3">Video Demo Requirements:</h3>
+                      <p className="fs-5 mb-4 opacity-75">
+                        1. Explanation of "Al-Sukun" in your language and Arabic. <br/>
+                        2. Explanation of performing Salah in your language and Arabic. <br/>
+                        3. Reading the first 5 verses of "Sura Younes".
+                      </p>
+                      <div className="form-group mb-0">
+                        <label htmlFor="demoVideoFile" className={style.formLabel}>Upload your demo video</label>
+                        <input
+                          type="file"
+                          accept="video/mp4, video/mov, video/avi, video/mkv, video/m4v"
+                          className={`form-control ${style.formInput}`}
+                          id="demoVideoFile"
+                          {...register("demoVideoFile", {
+                            required: "Video file is required",
+                            validate: {
+                              maxFileSize: (value) => {
+                                if (value && value.length > 0) {
+                                  return value[0].size <= 52428800 || "File size should be less than 50MB";
+                                }
+                                return true;
+                              },
                             },
-                          },
-                        })}
-                      />
-                      <label htmlFor="demoVideoFile">
-                        Upload your demo video
-                      </label>
-                      {errors.demoVideoFile && (
-                        <p className="text-danger">
-                          {errors.demoVideoFile.message}
-                        </p>
-                      )}
+                          })}
+                        />
+                        {errors.demoVideoFile && (
+                          <p className="text-danger mt-2 small">
+                            {errors.demoVideoFile.message}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
+                    <div className="form-group mb-4">
+                      <label htmlFor="cvFile" className={style.formLabel}>Upload your CV</label>
                       <input
                         type="file"
                         accept=".pdf, .docx, .png, .jpeg, .jpg"
-                        className="form-control"
+                        className={`form-control ${style.formInput}`}
                         id="cvFile"
                         {...register("cvFile", {
                           required: "CV file is required",
@@ -688,57 +791,49 @@ export default function JoinAsTeacher() {
                           },
                         })}
                       />
-                      <label htmlFor="cvFile">Upload your CV</label>
                       {errors.cvFile && (
-                        <p className="text-danger">{errors.cvFile.message}</p>
+                        <p className="text-danger mt-1 small">{errors.cvFile.message}</p>
                       )}
                     </div>
                   </div>
                   <div className="col-lg-6 col-md-12">
-                    <div className="form-floating mb-3">
-                      <select
-                        type="text"
-                        id="hearAboutUs"
-                        className="form-select"
-                        placeholder="How did you hear about us?"
-                        {...register("hearAboutUs", {
-                          required: "Please let us know how you heard about us",
-                        })}
-                      >
-                        <option value="" disabled>
-                          Select how you heard about us
-                        </option>
-                        <option value="Search_Engine">
-                          Search Engine (Google, Yahoo, etc.)
-                        </option>
-                        <option value="Social_Media">
-                          Social Media (Facebook, Twitter, etc.)
-                        </option>
-                        <option value="Recommended_By_Friend">
-                          Recommended By Friend
-                        </option>
-                        <option value="Blog">Blog</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      <label htmlFor="hearAboutUs">
-                        How did you hear about us?
-                      </label>
+                    <div className="form-group mb-4">
+                      <label className={style.formLabel}>How did you hear about us?</label>
+                      <Controller
+                        name="hearAboutUs"
+                        control={control}
+                        rules={{ required: "Please select an option" }}
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={HearAboutUsOptions}
+                            placeholder="Select an option"
+                            styles={comboStyles}
+                            onChange={(val) => field.onChange(val.value)}
+                            value={HearAboutUsOptions.find(opt => opt.value === field.value)}
+                          />
+                        )}
+                      />
                       {errors.hearAboutUs && (
-                        <p className="text-danger">
+                        <p className="text-danger mt-1 small">
                           {errors.hearAboutUs.message}
                         </p>
                       )}
                     </div>
                   </div>
-                  <div className="col-lg-12">
+                  <div className="col-lg-12 text-center mt-4">
                     <button
                       type="submit"
-                      className="btn fs-3 fw-bold border border-dark"
+                      className={style.submitBtn}
+                      disabled={loading}
                     >
                       {loading ? (
-                        "Please wait while we process your request..."
+                        <span className="d-flex align-items-center justify-content-center gap-2">
+                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                          Processing...
+                        </span>
                       ) : (
-                        "Submit"
+                        "Submit Application"
                       )}
                     </button>
                   </div>

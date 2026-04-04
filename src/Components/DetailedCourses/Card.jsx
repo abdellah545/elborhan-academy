@@ -36,11 +36,11 @@ const Card = ({ ID, Title, imageURL }) => {
   useEffect(() => {
     const titleElement = document.getElementById("title");
     if (titleElement) {
-      console.log("title");
+
       const titleDirection = getDirection(Title);
       setTitleDirection(titleDirection);
       titleElement.dir = titleDirection;
-      console.log(titleElement.dir);
+
     }
   }, [Title]); // Add Title as a dependency
   return (

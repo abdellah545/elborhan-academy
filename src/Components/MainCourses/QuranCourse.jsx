@@ -26,7 +26,7 @@ export default function QuranCourse() {
                   src={quran_img}
                   alt="Quran course illustration"
                   className={`img-fluid ${style.img_size}`}
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                 />
               </div>

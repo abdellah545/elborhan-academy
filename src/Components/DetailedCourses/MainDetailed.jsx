@@ -14,7 +14,7 @@ export default function MainDetailed(props) {
   useEffect(() => {
     const getCourses = async () => {
       const category = props.category;
-      console.log("selected category", category);
+
       try {
         const response = await axios.get(
           `${baseURL}/Course/GetAllCoursesOfCategory/${category}`,
@@ -30,7 +30,7 @@ export default function MainDetailed(props) {
         );
 
         const received = response.data;
-        console.log(received);
+
 
         // Transform the received data into the desired format
         const transformedData = received.map((item) => ({
@@ -46,7 +46,7 @@ export default function MainDetailed(props) {
         setCourseImages(transformedData.map((item) => item.imageUrl));
         setCourseIDs(transformedData.map((item) => item.id));
       } catch (error) {
-        console.log(error);
+
       }
     };
 

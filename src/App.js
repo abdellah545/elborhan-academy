@@ -7,7 +7,6 @@ import { cookieExists, getCookie } from "./Helper/CookieHelper";
 import baseURL from "./BaseURL/BaseURL";
 
 import {
-  Navigate,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
@@ -44,20 +43,9 @@ const PaymentFailure = lazy(() => import("./Components/FamilyDashboard/PaymentFa
 const TheCourse = lazy(() => import("./Components/DetailedCourses/EachCourse/The-course-itself"));
 const TheBlog = lazy(() => import("./Components/Blog/EachBlog/The-blog-itself"));
 
-// ========================= PROTECTED ROUTE =========================
-const isAuthenticated = () => {
-  console.log(cookieExists("refreshToken"));
-  if (cookieExists("AccessToken") === false) {
-    return false;
-  } else {
-    return true;
-  }
-};
-
-const ProtectedRoute = ({ element, path }) => {
-  if (!isAuthenticated()) {
-    return <Navigate to="/login" replace />;
-  }
+// ========================= PROTECTED ROUTE (DEV MODE - BYPASSED) =========================
+// ⚠️ DEV MODE: Authentication check is disabled — all dashboard pages are accessible directly
+const ProtectedRoute = ({ element }) => {
   return <>{element}</>;
 };
 // ========================= PROTECTED ROUTE =========================
@@ -80,7 +68,7 @@ async function loginWithRefreshToken() {
     sessionStorage.setItem("refreshToken", res.data.refreshToken);
     return true;
   } catch (error) {
-    console.log(error);
+
     return false;
   }
 }
@@ -135,11 +123,20 @@ function App() {
     },
     { path: "/payment-success", element: <ProtectedRoute element={<PaymentSuccess />} /> },
     { path: "/payment-failed", element: <ProtectedRoute element={<PaymentFailure />} /> },
-  ]);
+  ], {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
+    }
+  });
 
   return (
     <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#0f172a', color: '#fff' }}>Loading...</div>}>
-      <RouterProvider router={router} />
+      <RouterProvider router={router} future={{ v7_startTransition: true }} />
     </Suspense>
   );
 }

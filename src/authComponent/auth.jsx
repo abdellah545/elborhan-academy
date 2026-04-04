@@ -25,15 +25,15 @@ export const refreshAccessToken = async () => {
     );
 
     // Extract the new access token from the response
-    console.log(response);
+
     const newAccessToken = response.data.token;
-    console.log("new access token", newAccessToken);
+
 
     // Update the session storage with the new access token
 
     sessionStorage.setItem("AccessToken", newAccessToken);
   } catch (error) {
-    console.error("Error refreshing access token:", error);
+
     throw error; // Propagate the error to the calling code if needed
   }
 };

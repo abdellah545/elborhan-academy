@@ -1,104 +1,55 @@
-.faqs {
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    min-height: 800px;
-    height: auto;
-    width: 100%;
-}
-
-.faqs .leftImage {
-    width: 100%;
-}
-
-.faqs .rightImage {
-    width: 100%;
-}
-
-.faqs .cloud {
-    position: absolute;
-    left: 1279px;
-    top: 101px;
-    width: 300px;
-    z-index: -1;
-}
-
-.faqs .cloudwithlantern {
-    position: absolute;
-    left: 66px;
-    top: 101px;
-    width: 20%;
-    z-index: -1;
-}
-
-.faqs .left {
-    display: flex;
-
-}
-
-.faqs .right {
-    display: flex;
-
-}
-
-.questions {
+.faqsContainer {
+    padding: 100px 0;
+    min-height: 100vh;
+    background-color: var(--bg-main);
     display: flex;
     flex-direction: column;
-    align-self: center;
-    width: auto;
-    margin-top: 63px;
+    align-items: center;
 }
 
-@media only screen and (max-width: 1440px) {
-    .faqs .cloud {
-        left: 993px;
-        width: 225px;
-    }
+.headerSection {
+    text-align: center;
+    margin-bottom: 70px;
 }
 
-@media only screen and (max-width: 1024px) {
-
-    .cloudwithlantern {
-        display: none;
-    }
-
-    img {
-        border: none;
-    }
-
-    .faqs .cloud {
-        position: absolute;
-        left: 650px;
-        width: 25%;
-        z-index: -1;
-    }
+.mainTitle {
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    color: var(--text-main);
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -2px;
 }
 
-
-
-@media only screen and (max-width: 768px) {
-
-    .questions {
-        width: 1500px;
-    }
-
-    .cloud {
-        display: none;
-    }
-
-    .cloudwithlantern {
-        display: none;
-    }
-
-    img {
-        border: none;
-    }
+.subTitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    opacity: 0.9;
 }
 
-@media only screen and (max-width: 425px) {
+.accentLine {
+    width: 60px;
+    height: 4px;
+    background: var(--accent-color);
+    margin: 24px auto 0;
+    border-radius: 4px;
+    box-shadow: 0 0 15px var(--accent-color);
+}
 
-    .rightImage {
-        width: 100%;
+.accordionWrapper {
+    max-width: 950px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .faqsContainer {
+        padding: 60px 0;
+    }
+    
+    .headerSection {
+        margin-bottom: 40px;
+        padding: 0 20px;
     }
 }

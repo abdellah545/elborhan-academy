@@ -53,6 +53,10 @@ export default function MianBage() {
 
   const handleGetOurTeachers = async () => {
     try {
+      // ⚠️ DEV MODE BYPASS: Preventing ERR_NAME_NOT_RESOLVED
+      setTeachers([]);
+      return;
+      /*
       const res = await axios.get(
         "https://el-burhanacademy.azurewebsites.net/MainPage/GetOurTeachers",
         {
@@ -63,8 +67,9 @@ export default function MianBage() {
         },
       );
       setTeachers(Array.isArray(res.data) ? res.data : []);
+      */
     } catch (error) {
-      console.log(error);
+
     }
   };
 
@@ -153,7 +158,7 @@ export default function MianBage() {
                       src={quranIcon}
                       alt="quran"
                       className={style.width_img}
-                      loading="lazy"
+                      loading="eager"
                       decoding="async"
                     />
                   </div>
@@ -189,7 +194,7 @@ export default function MianBage() {
                       src={islamicIcon}
                       alt="islamic"
                       className={style.width__img}
-                      loading="lazy"
+                      loading="eager"
                       decoding="async"
                     />
                   </div>
@@ -225,7 +230,7 @@ export default function MianBage() {
                       src={arabicIcon}
                       alt="arabic"
                       className={style.width__img}
-                      loading="lazy"
+                      loading="eager"
                       decoding="async"
                     />
                   </div>

@@ -1,171 +1,307 @@
-import React, { useEffect, useState } from "react";
-import SideBar from "./SideBar";
-import style from "./PaymentReport.module.css";
-
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { Paper } from "@mui/material";
-import Footer from "../footer/footer";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import axiosinterceptor from "../../authComponent/axiosinterceptor";
 import baseURL from "../../BaseURL/BaseURL";
-import "../ProgressBar/ProgressBar.css";
+import style from "./Dashboard.module.css";
 
-function PaymentReportTable({ student }) {
+// ⚠️ DEV MODE: Toggle this to true to see fake data while backend is down
+const USE_FAKE_DATA = true;
+
+/* ─── Extra CSS only for PaymentReport ─── */
+const payStyle = {
+  page: {
+    minHeight: "calc(100vh - 68px)",
+    background: "#0f0f1a",
+    padding: "2rem",
+  },
+  pageTitle: {
+    fontSize: "1.5rem",
+    fontWeight: 800,
+    color: "#fff",
+    marginBottom: "0.25rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.6rem",
+  },
+  pageSubtitle: {
+    fontSize: "0.875rem",
+    color: "rgba(255,255,255,0.4)",
+    marginBottom: "2rem",
+  },
+  studentSection: {
+    marginBottom: "2rem",
+  },
+  studentHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    marginBottom: "1rem",
+  },
+  studentAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    background: "linear-gradient(135deg, #f172b633, #7c6aff33)",
+    border: "1px solid rgba(241,114,182,0.25)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontWeight: 700,
+    color: "#f172b6",
+    fontSize: "0.9rem",
+    flexShrink: 0,
+  },
+  studentName: {
+    fontSize: "1rem",
+    fontWeight: 700,
+    color: "#fff",
+    textTransform: "capitalize",
+    margin: 0,
+  },
+  studentTotal: {
+    marginLeft: "auto",
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    color: "#4ade80",
+    background: "rgba(74,222,128,0.1)",
+    border: "1px solid rgba(74,222,128,0.2)",
+    borderRadius: 50,
+    padding: "0.25rem 0.75rem",
+  },
+  summaryBar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: "1rem",
+    background: "rgba(255,255,255,0.04)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: 16,
+    padding: "1.25rem 1.5rem",
+    marginBottom: "2rem",
+  },
+  summaryLabel: {
+    fontSize: "0.85rem",
+    color: "rgba(255,255,255,0.45)",
+    marginBottom: "0.25rem",
+  },
+  summaryValue: {
+    fontSize: "1.5rem",
+    fontWeight: 800,
+    color: "#fff",
+  },
+  payBtn: {
+    padding: "0.75rem 2rem",
+    borderRadius: 12,
+    border: "none",
+    background: "linear-gradient(135deg, #4ade80, #22c55e)",
+    color: "#0f0f1a",
+    fontWeight: 700,
+    fontSize: "0.95rem",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    transition: "opacity 0.2s ease",
+  },
+  noDue: {
+    textAlign: "center",
+    padding: "4rem 1rem",
+    opacity: 0.6,
+  },
+  noDueIcon: { fontSize: "3rem", marginBottom: "1rem" },
+  noDueText: { color: "#4ade80", fontWeight: 700, fontSize: "1.1rem" },
+};
+
+/**
+ * Formats date string
+ */
+const fmt = (d) => {
+  if (!d) return "—";
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(new Date(d));
+  } catch {
+    return d;
+  }
+};
+
+const getInitials = (name = "") =>
+  name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase() || "?";
+
+/**
+ * One student's payment table — memoised
+ */
+const StudentPaymentTable = memo(function StudentPaymentTable({ student }) {
   return (
-    <>
-      <div className="row p-3">
-        <div className="col-lg-12 col-md-12 col-sm-12">
-          <TableContainer
-            sx={{ width: "70%", marginX: "auto" }}
-            component={Paper}
-          >
-            <h1 className="fw-bold p-3 text-center">
-              Detailed list for{" "}
-              <span className="text-capitalize">{student.name}</span>
-            </h1>
-            <hr />
-            <Table
-              sx={{ padding: "10px", marginTop: "" }}
-              aria-label="simple table"
-            >
-              <TableHead>
-                <TableRow sx={{ backgroundColor: "#A9A9A9" }}>
-                  <TableCell
-                    sx={{ width: "20%", fontWeight: "bold", fontSize: "22px" }}
-                    align="center"
-                  >
-                    Date
-                  </TableCell>
-                  <TableCell
-                    sx={{ width: "20%", fontWeight: "bold", fontSize: "22px" }}
-                    align="center"
-                  >
-                    Subject
-                  </TableCell>
-                  <TableCell
-                    sx={{ width: "20%", fontWeight: "bold", fontSize: "22px" }}
-                    align="center"
-                  >
-                    Duration
-                  </TableCell>
-                  <TableCell
-                    sx={{ width: "20%", fontWeight: "bold", fontSize: "22px" }}
-                    align="center"
-                  >
-                    Cost
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {student.sessions.map((session, index) => (
-                  <TableRow
-                    key={index}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      backgroundColor: "#DCDCDC",
-                    }}
-                  >
-                    <TableCell sx={{ fontSize: "20px" }} align="center">
-                      {session.date}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: "20px" }} align="center">
-                      {session.subject}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: "20px" }} align="center">
-                      {session.duration}
-                    </TableCell>
-                    <TableCell sx={{ fontSize: "20px" }} align="center">
-                      {session.costOfThisSession}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {/* TableRow for total cost */}
-                <TableRow>
-                  <TableCell colSpan={4} sx={{ textAlign: "center" }}>
-                    <h3>Total cost : {student.costOfSessions} $</h3>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <hr />
-        </div>
+    <div style={payStyle.studentSection}>
+      <div style={payStyle.studentHeader}>
+        <div style={payStyle.studentAvatar}>{getInitials(student.name)}</div>
+        <p style={payStyle.studentName}>{student.name}</p>
+        <span style={payStyle.studentTotal}>${student.costOfSessions ?? 0}</span>
       </div>
-    </>
+
+      <div className={style.tableWrap}>
+        <table className={style.table} aria-label={`Payment details for ${student.name}`}>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Subject</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Session Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {student.sessions?.length > 0 ? (
+              student.sessions.map((s, i) => (
+                <tr key={s.id ?? i}>
+                  <td>{fmt(s.date)}</td>
+                  <td>{s.subject ?? "—"}</td>
+                  <td>{s.duration != null ? `${s.duration} mins` : "—"}</td>
+                  <td>
+                    <span style={{ color: "#4ade80", fontWeight: 600 }}>
+                      ${s.costOfThisSession ?? 0}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={4} className={style.tableEmpty}>
+                  No sessions found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
-}
+});
 
 export default function PaymentReport() {
   const [reportData, setReportData] = useState(null);
-  const [payment, setPayment] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [paying, setPaying] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     async function fetchPaymentReport() {
+      if (USE_FAKE_DATA) {
+        if (!cancelled) {
+          setReportData({
+            isfound: true,
+            cost: 215,
+            studentSessionsOfFamily: [
+              {
+                name: "Ahmed Ali",
+                costOfSessions: 150,
+                sessions: [
+                  { id: 1, date: "2024-04-01T10:00:00Z", subject: "Quran Recitation", duration: 60, costOfThisSession: 75 },
+                  { id: 2, date: "2024-04-05T10:00:00Z", subject: "Quran Recitation", duration: 60, costOfThisSession: 75 },
+                ]
+              },
+              {
+                name: "Fatima Ali",
+                costOfSessions: 65,
+                sessions: [
+                  { id: 3, date: "2024-04-03T14:30:00Z", subject: "Arabic Language", duration: 45, costOfThisSession: 65 }
+                ]
+              }
+            ]
+          });
+          setLoading(false);
+        }
+        return;
+      }
+
       try {
-        setLoading(true);
-        const response = await axiosinterceptor.get(
-          `${baseURL}/Family/PaymentReport`
-        );
-        setLoading(false);
-        setReportData(response.data);
-      } catch (error) {
-        console.error("Error fetching payment report:", error);
-        setLoading(false);
+        const res = await axiosinterceptor.get(`${baseURL}/Family/PaymentReport`);
+        if (!cancelled) setReportData(res.data);
+      } catch (err) {
+
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     }
-
     fetchPaymentReport();
+    return () => { cancelled = true; };
   }, []);
 
-  const handlePayment = async () => {
+  const handlePayment = useCallback(async () => {
+    setPaying(true);
     try {
-      const response = await axiosinterceptor.get(
-        `${baseURL}/api/Payment/PaymentWithPayMob`
-      );
-      window.location.replace(response.data);
-    } catch (error) {
-      console.error("Error fetching payment report:", error);
+      const res = await axiosinterceptor.get(`${baseURL}/api/Payment/PaymentWithPayMob`);
+      window.location.replace(res.data);
+    } catch (err) {
+
+      setPaying(false);
     }
-  };
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ ...payStyle.page, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className={style.spinner} />
+      </div>
+    );
+  }
+
+  const students = reportData?.studentSessionsOfFamily ?? [];
+  const hasPayment = reportData?.isfound;
+  const totalCost = reportData?.cost ?? 0;
 
   return (
-    <>
-      {loading && (
-        <>
-          <div className="redirect">
-            <div class="loader"></div>
+    <div style={payStyle.page}>
+      <h1 style={payStyle.pageTitle}>
+        <i className="fa-solid fa-credit-card" style={{ color: "#f172b6" }} />
+        Payment Report
+      </h1>
+      <p style={payStyle.pageSubtitle}>
+        Detailed billing breakdown for all children
+      </p>
+
+      {/* Summary bar */}
+      {hasPayment && (
+        <div style={payStyle.summaryBar}>
+          <div>
+            <div style={payStyle.summaryLabel}>Total Due</div>
+            <div style={payStyle.summaryValue}>${totalCost}</div>
           </div>
-        </>
+          <div>
+            <div style={payStyle.summaryLabel}>Students</div>
+            <div style={payStyle.summaryValue}>{students.length}</div>
+          </div>
+          <button
+            style={payStyle.payBtn}
+            onClick={handlePayment}
+            disabled={paying}
+          >
+            {paying ? (
+              <span className={style.btnSpinner} />
+            ) : (
+              <i className="fa-solid fa-bolt" />
+            )}
+            {paying ? "Redirecting…" : "Pay Now"}
+          </button>
+        </div>
       )}
-      <div className={`${style.padding}`}>
-        {reportData &&
-          reportData.studentSessionsOfFamily.map((student, index) => (
-            <PaymentReportTable key={index} student={student} />
-          ))}
-        {reportData?.isfound ? (
-          <div className="total_cost container d-flex justify-content-between my-3">
-            <h1 className="fw-bold">
-              Total cost for all students : {reportData?.cost} $
-            </h1>
-            <button
-              className="btn btn-success fs-3 fw-bold"
-              onClick={handlePayment}
-            >
-              {" "}
-              Pay Now
-            </button>
-          </div>
-        ) : (
-          <div className=" d-flex justify-content-center align-items-center">
-            <h1 className="fw-bold text-success">No data found</h1>
-          </div>
-        )}
-      </div>
-    </>
+
+      {students.length > 0 ? (
+        students.map((student, i) => (
+          <StudentPaymentTable key={student.id ?? i} student={student} />
+        ))
+      ) : (
+        <div style={payStyle.noDue}>
+          <div style={payStyle.noDueIcon}>✅</div>
+          <p style={payStyle.noDueText}>No outstanding payments</p>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+            All sessions are fully paid up.
+          </p>
+        </div>
+      )}
+    </div>
   );
 }

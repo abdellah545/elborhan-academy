@@ -1,54 +1,41 @@
 .imageWrapper {
-  width: clamp(120px, 15vw, 180px);
-  height: clamp(120px, 15vw, 180px);
-  padding: 20px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.05);
+  width: auto;
+  height: auto;
+  padding: 50px;
   display: flex !important;
   justify-content: center;
   align-items: center;
   transition: all 0.4s ease;
+  margin: 0 auto;
 }
 
 :global(html[data-theme="dark"]) .imageWrapper {
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(241, 114, 182, 0.1) 40%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(241, 114, 182, 0.1) 45%,
     transparent 75%
   );
-  box-shadow: 0 0 50px rgba(241, 114, 182, 0.15);
 }
 
-.teacherImage {
-  width: 100%;
-  height: auto;
-  transition: filter 0.4s ease;
+.freeTrialImage {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  transition: all 0.4s ease !important;
 }
 
-:global(html[data-theme="dark"]) .teacherImage {
-  filter: brightness(1.1) contrast(1.1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+:global(html[data-theme="dark"]) .freeTrialImage {
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) !important;
 }
 
-.joinHeader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 50px;
-  padding: 60px 0;
-  width: 100%;
+.topSection {
+  padding: 100px 0;
+  text-align: center;
 }
 
-@media (max-width: 991px) {
-  .joinHeader {
-    flex-direction: column;
-    text-align: center;
-    gap: 30px;
-  }
-
-  .imageWrapper {
-    margin-bottom: 0;
-  }
+.headerContent {
+  padding-right: 20px;
 }
 
 .formContainer {
@@ -138,33 +125,38 @@
   transform: translateY(0);
 }
 
-.comboInput :global(.react-select__control) {
-  border: 2px solid var(--border-color) !important;
-  border-radius: 12px !important;
-  background-color: var(--bg-main) !important;
-  min-height: 52px !important;
+.textarea {
+  min-height: 150px;
+  resize: vertical;
 }
 
-:global(html[data-theme="dark"]) .comboInput :global(.react-select__control) {
-  background-color: rgba(255, 255, 255, 0.03) !important;
+.sectionTitle {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
 }
 
-.comboInput :global(.react-select__placeholder) {
-  color: var(--text-muted) !important;
+.sectionSubtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
-.comboInput :global(.react-select__single-value) {
-  color: var(--text-main) !important;
-}
-
-.videoSection {
-  background-color: rgba(0, 0, 0, 0.03);
-  padding: 30px;
-  border-radius: 20px;
-  border: 1px dashed var(--border-color);
-  margin: 30px 0;
-}
-
-:global(html[data-theme="dark"]) .videoSection {
-  background-color: rgba(255, 255, 255, 0.03);
+@media (max-width: 768px) {
+  .topSection {
+    padding: 60px 0;
+  }
+  
+  .imageWrapper {
+    padding: 30px;
+  }
+  
+  .formContainer {
+    padding: 30px 20px !important;
+    border-radius: 20px !important;
+  }
+  
+  .sectionTitle {
+    font-size: 2.2rem;
+  }
 }

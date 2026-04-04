@@ -34,42 +34,28 @@ const Card = ({ ID, Title, imageURL, Desc }) => {
   const descDirection = getDirection(Desc);
 
   return (
-    <div className="col-lg-4 col-md-12 col-sm-12 mb-5">
-      <div className="card">
-        <img
-          style={{ height: "300px", width: "100%",cursor: "pointer" }}
-          src={imageURL}
-          className="card-img-top"
-          alt="..."
-          onClick={handleClick}
-        />
-        <div
-          className={`card-body ${CardStyles.Card}`}
-          style={{
-            transition: "background-color 0.3s",
-            cursor: "pointer",
-
-          }}
-          onClick={handleClick}
-        >
-          {/* <Editor title={Title} desc={Desc} /> */}
+    <div className="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex align-items-stretch">
+      <div 
+        className={`card w-100 ${CardStyles.Card} border-0 bg-transparent`}
+        onClick={handleClick}
+        style={{ cursor: "pointer" }}
+      >
+        <div className={CardStyles.cardImgWrap}>
+          <img
+            src={imageURL}
+            alt={Title}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div className={CardStyles.cardBody}>
           <h3
-            className="card-title text-truncate"
             dangerouslySetInnerHTML={{ __html: Title }}
-            id="title"
-            dir={titleDirection} // Set the direction here
-            // style={{
-            //   overflow: "hidden",
-            //   textOverflow: "ellipsis",
-            //   WebkitLineClamp: "1", // Number of lines to show
-            //   WebkitBoxOrient: "vertical",
-            // }}
+            dir={titleDirection}
           ></h3>
           <p
             dangerouslySetInnerHTML={{ __html: Desc }}
-            className="text-truncate"
-            id="desc"
-            dir={descDirection} // Set the direction here
+            dir={descDirection}
           ></p>
         </div>
       </div>

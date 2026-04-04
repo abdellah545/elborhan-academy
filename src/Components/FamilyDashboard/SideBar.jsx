@@ -1,361 +1,315 @@
-import React, { useEffect, useState } from "react";
-import style from "./SideBar.module.css";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import axiosinterceptor from "../../authComponent/axiosinterceptor";
 import Swal from "sweetalert2";
-import baseURL from "../../BaseURL/BaseURL";
-import "../ProgressBar/ProgressBar.css";
 import { useForm } from "react-hook-form";
+import baseURL from "../../BaseURL/BaseURL";
+import style from "./Dashboard.module.css";
 
-export default function SideBar({ handleSessionsForStudent }) {
-  const [childName, setChildName] = useState("");
-  const [childrenList, setChildrenList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+// ⚠️ DEV MODE: Toggle this to true to see fake data while backend is down
+const USE_FAKE_DATA = true;
 
-  const fetchStudentDetails = async (studentId) => {
-    setLoading(false);
-    try {
-      const res = await axiosinterceptor.get(
-        `${baseURL}/Family/StudentReport/${studentId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      // setLoading(true);
+/**
+ * Formats total minutes → "Xhr Ymins"
+ */
+const formatDuration = (minutes) => {
+  if (!minutes) return "0 mins";
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+};
 
-      return res.data;
-    } catch (error) {
-      console.error("Error fetching student details:", error);
-      return null;
-    }
-  };
+/**
+ * Gets initials from student name
+ */
+const getInitials = (name = "") =>
+  name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase() || "?";
 
-  const handleFetchStudentNameANDid = async () => {
-    try {
-      setLoading(true);
-      const res = await axiosinterceptor.get(`${baseURL}/Family/GetStudents`, {
-        withCredentials: true,
-      });
+/**
+ * Single child card — memoised to avoid re-renders when siblings update
+ */
+const ChildCard = memo(function ChildCard({ child, index, onViewSessions, isLoadingSessions }) {
+  const subjects = child.subjectsAverageRating || [];
 
-      setLoading(true);
-      const detailedStudentList = await Promise.all(
-        res.data.map(async (student) => {
-          const studentDetails = await fetchStudentDetails(student.studentId);
-          return { ...student, ...studentDetails };
-        })
-      );
-
-      setLoading(false);
-      setChildrenList(detailedStudentList);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching students:", error);
-    }
-  };
-
-  useEffect(() => {
-    handleFetchStudentNameANDid();
-  }, []);
-
-  const handleAddChild = async (e) => {
-    e.preventDefault();
-    setError(true);
-    try {
-      setLoading(true);
-      const res = await axiosinterceptor.post(
-        `${baseURL}/Family/AddStudent/${childName}`,
-        {},
-        {
-          params: {
-            Name: childName,
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      if (res.status === 200) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Child added successfully",
-          showConfirmButton: false,
-          timer: 4000,
-        });
-        setChildName("");
-        handleFetchStudentNameANDid(); // Refetch student list to update the table
-        setLoading(true);
-        // setError(false);
-      }
-    } catch (error) {
-      console.error("Error adding child:", error);
-      setLoading(false);
-      // setError(false);
-    }
-  };
-
-  const onAddChildSubmit = async (data) => {
-    try {
-      setLoading(true);
-      const res = await axiosinterceptor.post(
-        `${baseURL}/Family/AddStudent/${data.childName}`,
-        {},
-        {
-          params: {
-            Name: data.childName,
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
-      if (res.status === 200) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Child added successfully",
-          showConfirmButton: false,
-          timer: 4000,
-        });
-        handleFetchStudentNameANDid(); // Refetch student list to update the table
-        setLoading(true);
-        // setError(false);
-      }
-    } catch (error) {
-      console.error("Error adding child:", error);
-      if(error.response.data.includes("Student Already Exist")){
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Student Already Exist",
-          showConfirmButton: false,
-          timer: 4000,
-        });
-      }
-      setLoading(false);
-      // setError(false);
-    }
-  };
   return (
-    <>
-      {loading && (
-        <>
-          <div className="redirect">
-            <div class="loader"></div>
+    <div className={style.childCard}>
+      {/* Header row */}
+      <div className={style.childCardHeader}>
+        <div className={style.childAvatar}>{getInitials(child.studentName)}</div>
+        <p className={style.childName}>{child.studentName || `Student ${index + 1}`}</p>
+        <span className={`${style.childStatusBadge} ${child.isActive ? style.active : style.inactive}`}>
+          <i className={`fa-solid fa-circle fa-2xs`} />
+          {child.isActive ? "Active" : "Inactive"}
+        </span>
+      </div>
+
+      {/* Payment warning */}
+      <div className={`${style.payWarning} ${child.isActive ? style.noPay : style.mustPay}`}>
+        {child.isActive
+          ? "✓ No payment due"
+          : "⚠ Payment required"}
+      </div>
+
+      {/* Stats grid */}
+      <div className={style.childStats}>
+        <div className={style.childStatItem}>
+          <div className={style.childStatLabel}>Avg Rating</div>
+          <div className={style.childStatValue}>
+            ⭐ {child.averageRating ? `${child.averageRating}/5` : "—"}
           </div>
-        </>
-      )}
-      <div className={`${style.sidebar}`}>
-        <div className={`${style.sidebar_content}`}>
-          <div className="row py-2">
-            <div className="col-lg-4 col-md-12">
-              <h3 className="text-center fw-bold mt-2">Children List</h3>
-            </div>
-            <div className="col-lg-8 col-md-12 text-center">
-              <form onSubmit={handleSubmit(onAddChildSubmit)}>
-                <button
-                  class="btn fs-3"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseExample"
-                  aria-expanded="false"
-                  aria-controls="collapseExample"
-                >
-                  <span className="mx-2">Add Child</span>
-                  <i class="fa-solid fa-circle-plus letter-spacing"></i>
-                </button>
-                <div class="collapse col-lg-12 col-md-12" id="collapseExample">
-                  <div class="card card-body">
-                    <input
-                      type="text"
-                      placeholder="Add Child"
-                      class="form-control"
-                      {...register("childName", {
-                        required: "Name is required",
-                        maxLength: {
-                          value: 25,
-                          message: "Student name shouldn't exceed 25 characters",
-                        },
-                      })}
-
-                    />
-                    {errors.childName && (
-                      <p className="text-danger">
-                        {errors.childName.message}
-                      </p>
-                    )}
-                    <button
-                      className="btn btn-dark mt-2"
-                      type="submit"
-                      // onClick={handleAddChild}
-                      data-bs-target="#collapseExample"
-                      aria-expanded="false"
-                      aria-controls="collapseExample"
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          <hr />
-          <div className="container">
-            <div className="row">
-              {childrenList.map((child, index) => (
-                <>
-                  <React.Fragment key={index}>
-                    <div className="col-lg-7 col-md-12 col-sm-12 my-3 p-3">
-                      <h3 className="fw-bold text-capitalize">
-                        <span
-                          className={`id fw-bold cursor-not-allowed ${style.bg_gray}`}
-                        >
-                          {index + 1}
-                        </span>{" "}
-                        {child.studentName}{" "}
-                        {child.isActive ? (
-                          <i
-                            class="fa-solid fa-circle-check"
-                            style={{ color: "green" }}
-                          ></i>
-                        ) : (
-                          <i
-                            class="fa-solid fa-circle-xmark"
-                            style={{ color: "red" }}
-                          ></i>
-                        )}
-                      </h3>
-                      <br />
-                      <table className="table striped">
-                        <thead>
-                          <tr>
-                            <th className="text-center">Average Rate</th>
-                            <th className="text-center">Duration</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td className="text-center">
-                              {child.averageRating
-                                ? `${child.averageRating}/5`
-                                : "0/5"}
-                            </td>
-                            <td className="text-center">
-                              {child.totalMinutes
-                                ? `${Math.floor(child.totalMinutes / 60)} hrs ${
-                                    child.totalMinutes % 60
-                                  } mins`
-                                : "0 mins"}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      <div className="detailed row">
-                        <div className="col-lg-4">
-                          <p className="text-center fw-bold">Quran</p>
-                          <h5 className="text-center">
-                            {child.subjectsAverageRating &&
-                            child.subjectsAverageRating.length > 0
-                              ? `${
-                                  child.subjectsAverageRating[0]
-                                    ?.averageRating || "0"
-                                }/5`
-                              : "0.00/5"}
-                          </h5>
-                        </div>
-                        <div className="col-lg-4">
-                          <p className="text-center fw-bold">Islamic</p>
-                          <h5 className="text-center">
-                            {child.subjectsAverageRating &&
-                            child.subjectsAverageRating.length > 1
-                              ? `${
-                                  child.subjectsAverageRating[1]
-                                    ?.averageRating || "0"
-                                }/5`
-                              : "0.00/5"}
-                          </h5>
-                        </div>
-                        <div className="col-lg-4">
-                          <p className="text-center fw-bold">Arabic</p>
-                          <h5 className="text-center">
-                            {child.subjectsAverageRating &&
-                            child.subjectsAverageRating.length > 2
-                              ? `${
-                                  child.subjectsAverageRating[2]
-                                    ?.averageRating || "0"
-                                }/5`
-                              : "0.00/5"}
-                          </h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-center align-items-center flex-column">
-                      <h6 className="fw-bold">
-                        NO. OF SESSIONS :{" "}
-                        {child.numberOfSessions
-                          ? `${child.numberOfSessions}`
-                          : "0"}
-                      </h6>
-                      <br />
-                      <h4>Total Costs</h4>
-                      <h4 className="fw-bold">
-                        {child.totalCost ? `${child.totalCost} $` : "0 $"}
-                      </h4>
-                      <br />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleSessionsForStudent(
-                            child.studentId,
-                            child.studentName
-                          )
-                        }
-                        className={`mb-3 ${style.btn_dark}`}
-                        {...(window.innerWidth <= 992 && {
-                          "data-bs-dismiss": "offcanvas",
-                          "aria-label": "Close",
-                        })}
-                      >
-                        {loading ? (
-                          <div class="spinner-border text-light" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        ) : (
-                          "View Sessions"
-                        )}
-                      </button>
-                    </div>
-                    <div className="text-center fw-bold">
-                      {child.isActive ? (
-                        <div style={{ color: "green" }}>
-                          This child don't have to pay now
-                        </div>
-                      ) : (
-                        <div style={{ color: "red" }}>
-                          This child has to pay now
-                        </div>
-                      )}
-                    </div>
-
-                    <br />
-                  </React.Fragment>
-                  <div className="py-4 bg-white"></div>
-                </>
-              ))}
-            </div>
+        </div>
+        <div className={style.childStatItem}>
+          <div className={style.childStatLabel}>Sessions</div>
+          <div className={style.childStatValue}>{child.numberOfSessions ?? 0}</div>
+        </div>
+        <div className={style.childStatItem}>
+          <div className={style.childStatLabel}>Total Time</div>
+          <div className={style.childStatValue}>{formatDuration(child.totalMinutes)}</div>
+        </div>
+        <div className={style.childStatItem}>
+          <div className={style.childStatLabel}>Total Cost</div>
+          <div className={style.childStatValue}>
+            {child.totalCost ? `$${child.totalCost}` : "$0"}
           </div>
         </div>
       </div>
-    </>
+
+      {/* Subject ratings */}
+      {subjects.length > 0 && (
+        <div className={style.subjectRatings}>
+          {["Quran", "Islamic", "Arabic"].map((subj, si) => (
+            <div key={subj} className={style.subjectRatingItem}>
+              <span className={style.subjectRatingName}>{subj}</span>
+              <span className={style.subjectRatingValue}>
+                {subjects[si]?.averageRating ?? "—"}/5
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* View sessions CTA */}
+      <button
+        className={style.viewSessionsBtn}
+        onClick={() => onViewSessions(child.studentId, child.studentName)}
+        disabled={isLoadingSessions}
+        aria-label={`View sessions for ${child.studentName}`}
+      >
+        {isLoadingSessions ? (
+          <span className={style.btnSpinner} />
+        ) : (
+          <>
+            <i className="fa-solid fa-table-list" />
+            View Sessions
+          </>
+        )}
+      </button>
+    </div>
+  );
+});
+
+/**
+ * SideBar — lists children, handles add-child form
+ */
+export default function SideBar({ onViewSessions, isLoadingSessions }) {
+  const [childrenList, setChildrenList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  /* ── Fetch all students + their details in parallel ── */
+  const fetchAllStudents = useCallback(async () => {
+    setLoading(true);
+    if (USE_FAKE_DATA) {
+      setChildrenList([
+        {
+          studentId: 1,
+          studentName: "Ahmed Ali",
+          isActive: true,
+          averageRating: 4.8,
+          numberOfSessions: 12,
+          totalMinutes: 720,
+          totalCost: 150,
+          subjectsAverageRating: [
+            { subject: "Quran", averageRating: 4.9 },
+            { subject: "Islamic", averageRating: 4.5 },
+            { subject: "Arabic", averageRating: 5.0 }
+          ]
+        },
+        {
+          studentId: 2,
+          studentName: "Fatima Ali",
+          isActive: false,
+          averageRating: 4.2,
+          numberOfSessions: 5,
+          totalMinutes: 300,
+          totalCost: 65,
+          subjectsAverageRating: [
+            { subject: "Quran", averageRating: 4.1 },
+            { subject: "Islamic", averageRating: 4.4 },
+            { subject: "Arabic", averageRating: 4.0 }
+          ]
+        }
+      ]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const listRes = await axiosinterceptor.get(`${baseURL}/Family/GetStudents`, {
+        withCredentials: true,
+      });
+
+      const detailed = await Promise.all(
+        listRes.data.map(async (student) => {
+          try {
+            const detailRes = await axiosinterceptor.get(
+              `${baseURL}/Family/StudentReport/${student.studentId}`,
+              { withCredentials: true }
+            );
+            return { ...student, ...detailRes.data };
+          } catch {
+            return student;
+          }
+        })
+      );
+
+      setChildrenList(detailed);
+    } catch (err) {
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAllStudents();
+  }, [fetchAllStudents]);
+
+  /* ── Add child submit ── */
+  const onAddChild = useCallback(
+    async (data) => {
+      try {
+        setLoading(true);
+        const res = await axiosinterceptor.post(
+          `${baseURL}/Family/AddStudent/${data.childName}`,
+          {},
+          {
+            params: { Name: data.childName },
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+
+        if (res.status === 200) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Child added successfully",
+            showConfirmButton: false,
+            timer: 3000,
+            background: "#1a1a2e",
+            color: "#fff",
+          });
+          reset();
+          setShowAddForm(false);
+          fetchAllStudents();
+        }
+      } catch (err) {
+        const msg = err?.response?.data;
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: typeof msg === "string" && msg.includes("Already Exist")
+            ? "Student already exists"
+            : "Something went wrong",
+          showConfirmButton: false,
+          timer: 3000,
+          background: "#1a1a2e",
+          color: "#fff",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchAllStudents, reset]
+  );
+
+  return (
+    <aside className={style.sidebar}>
+      {/* Header */}
+      <div className={style.sidebarHeader}>
+        <h2 className={style.sidebarTitle}>
+          <i className="fa-solid fa-users" />
+          My Children
+        </h2>
+        <button
+          className={style.addChildToggle}
+          onClick={() => setShowAddForm((v) => !v)}
+          aria-expanded={showAddForm}
+        >
+          <i className={`fa-solid fa-${showAddForm ? "xmark" : "plus"}`} />
+          {showAddForm ? "Cancel" : "Add Child"}
+        </button>
+      </div>
+
+      {/* Add child form */}
+      {showAddForm && (
+        <form className={style.addChildForm} onSubmit={handleSubmit(onAddChild)} noValidate>
+          <input
+            id="childName"
+            type="text"
+            placeholder="Enter child's full name"
+            className={style.addChildInput}
+            autoFocus
+            {...register("childName", {
+              required: "Name is required",
+              maxLength: { value: 25, message: "Max 25 characters" },
+            })}
+          />
+          {errors.childName && (
+            <p className={style.fieldError}>{errors.childName.message}</p>
+          )}
+          <button
+            type="submit"
+            className={style.addChildSubmit}
+            disabled={loading}
+          >
+            {loading ? "Adding…" : "Add Child"}
+          </button>
+        </form>
+      )}
+
+      {/* Loading state */}
+      {loading && childrenList.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "3rem 1rem", opacity: 0.5 }}>
+          <div className={style.spinner} style={{ margin: "0 auto 1rem" }} />
+          <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
+            Loading children…
+          </p>
+        </div>
+      ) : childrenList.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "3rem 1rem", opacity: 0.5 }}>
+          <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>👨‍👩‍👧‍👦</div>
+          <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
+            No children added yet
+          </p>
+        </div>
+      ) : (
+        childrenList.map((child, index) => (
+          <ChildCard
+            key={child.studentId || index}
+            child={child}
+            index={index}
+            onViewSessions={onViewSessions}
+            isLoadingSessions={isLoadingSessions}
+          />
+        ))
+      )}
+    </aside>
   );
 }

@@ -34,7 +34,7 @@ const TheCourse = () => {
   };
   const getCourses = () => {
     const originalID = removeSaltFromID(courseID); // Removing salt from the salted ID
-    console.log(courseID);
+
     axios
       .get(
         `${baseURL}/Course/GetCoursesByID/${originalID}`,
@@ -70,13 +70,13 @@ const TheCourse = () => {
 
 
           const titleDirection = getDirection(received.name);
-          console.log(titleDirection)
+
           setTitleLanguage(titleDirection);
           setCourses([{ id: courseID, name: received.name, imageUrl: received.imageUrl }]);
         }
       })
       .catch((error) => {
-        console.error("Error fetching course:", error);
+
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -98,7 +98,7 @@ const TheCourse = () => {
           block.type === "header" ||
           block.type === "list"
       );
-      console.log(textBlock.data.text);
+
       const editorContainer = document.getElementById("editorjs");
       // Determine the direction based on the first text block
       const direction = textBlock.data.text

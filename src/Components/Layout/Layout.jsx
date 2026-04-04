@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Header from '../Header/Header'
 import { Outlet, useLocation } from 'react-router-dom'
+import DevNavBar from '../DevNavBar'
 import "animate.css"
 
 export default function Layout() {
@@ -41,6 +42,7 @@ export default function Layout() {
 
   return (
     <div>
+      <DevNavBar />
       <Header />
       <div className="layout-content" style={{ minHeight: "80vh" }}>
         <Outlet />
