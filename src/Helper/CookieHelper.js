@@ -38,9 +38,9 @@ const cookieExists = (name) => {
 const getCookie = (name) => {
   const cookieName = `${name}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
-  console.log(decodedCookie);
+
   const cookieArray = decodedCookie.split(";");
-  console.log(cookieArray);
+
   for (let i = 0; i < cookieArray.length; i++) {
     let cookie = cookieArray[i];
     while (cookie.charAt(0) === " ") {
@@ -48,7 +48,7 @@ const getCookie = (name) => {
     }
     if (cookie.indexOf(cookieName) === 0) {
       const value = cookie.substring(cookieName.length, cookie.length);
-      console.log("value:",value);
+
       return decodeURIComponent(value); // Decode the cookie value before returning
     }
   }

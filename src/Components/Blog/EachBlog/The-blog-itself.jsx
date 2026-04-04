@@ -8,9 +8,8 @@ import List from "@editorjs/list";
 import Table from "@editorjs/table";
 import Embed from "@editorjs/embed";
 import { useParams, useNavigate } from "react-router-dom";
-import "./EachBlog.css";
 import BlogSkeleton from "./SpecificBlogSkeleton";
-import CourseStyle from "../../DetailedCourses/EachCourse/NormalCoursePage.module.css";
+import styles from "./EachBlog.module.css";
 import Footer from "../../footer/footer";
 import baseURL from "../../../BaseURL/BaseURL";
 import Footer2 from "../../Footer2/Footer2";
@@ -43,7 +42,30 @@ const TheCourse = () => {
   const getBlog = () => {
     const originalID = removeSaltFromID(blogID); // Removing salt from the salted ID
 
-    console.log(blogID);
+    // ⚠️ DEV MODE BYPASS: Preventing ERR_NAME_NOT_RESOLVED
+    const fakeContent = {
+      time: 1680000000000,
+      blocks: [
+        { type: "paragraph", data: { text: "This is a detailed placeholder content for the blog post since the backend is currently disabled. Enjoy the premium UI layout!" } },
+        { type: "paragraph", data: { text: "Learning the rules of reading accurately provides numerous cognitive and spiritual benefits." } }
+      ],
+      version: "2.8.1"
+    };
+    
+    setReceivedResponse({
+      userName: "El-Burhan Admin",
+      createdAt: "2024-04-01T10:00:00Z",
+      content: JSON.stringify(fakeContent),
+      name: "Understanding Tajweed",
+      imageUrl: "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80"
+    });
+    
+    setContent(fakeContent);
+    setTitleLanguage("ltr");
+    setBlogs([{ id: blogID, name: "Understanding Tajweed", imageUrl: "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80" }]);
+    
+    return;
+    /*
     axios
       .get(`${baseURL}/Blog/GetBlogDetails/${originalID}`, {
         params: {
@@ -64,33 +86,27 @@ const TheCourse = () => {
           navigate("/blog");
         } else {
           const received = response.data;
-          console.log(received);
+
           setReceivedResponse(received);
 
           const unescapedBlogcontent = received.content.replace(/\\\\/g, "\\");
-
-
           const originalContent = JSON.parse(unescapedBlogcontent);
 
-
-
           setContent(originalContent);
-
-
           const titleDirection = getDirection(received.name);
-          console.log(titleDirection);
+
           setTitleLanguage(titleDirection);
           setBlogs([{ id: blogID, name: received.name, imageUrl: received.imageUrl }]);
         }
       })
       .catch((error) => {
-        console.error("Error fetching course:", error);
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "Something went wrong!",
         });
       });
+    */
   };
 
   const getDirection = (text) => {
@@ -113,7 +129,7 @@ const TheCourse = () => {
           block.type === "header" ||
           block.type === "list"
       );
-      console.log(textBlock.data.text);
+
       const editorContainer = document.getElementById("editorjs");
       // Determine the direction based on the first text block
       const direction = textBlock.data.text
@@ -147,28 +163,28 @@ const TheCourse = () => {
 
   return (
     <>
-      <div className={CourseStyle.EachCourse}>
-        <div className={CourseStyle.innerCourse}>
-          {Blogs.length > 0 ? (
-            Blogs.map((course) => (
-              <div key={course.id} className={CourseStyle.title}>
-                <h1 id="courseName">{course.name}</h1>
-                <hr></hr>
-                <p style={{ direction: "ltr" }}>
-                  {" "}
-                  created by <b> {receivedResponse.userName}</b> <br></br>{" "}
-                  created at <b>{formatDate(receivedResponse.createdAt)}</b>
-                </p>
+      <div className={styles.blogContainer}>
+        {Blogs.length > 0 ? (
+          Blogs.map((course) => (
+            <div key={course.id} className={styles.heroSection}>
+              <h1 id="courseName" className={styles.title}>{course.name}</h1>
+              <div className={styles.meta} style={{ direction: "ltr" }}>
+                <span>Created by <b>{receivedResponse.userName}</b></span>
+                <span className={styles.metaDivider}>•</span>
+                <span><b>{formatDate(receivedResponse.createdAt)}</b></span>
+              </div>
+              <div className={styles.heroImageWrap}>
                 <img src={course.imageUrl} alt={course.name} id="courseImg" />
               </div>
-            ))
-          ) : (
-            <BlogSkeleton />
-          )}
-          {content && Object.keys(content).length > 0 && (
-            <div id="editorjs" className={CourseStyle.content}></div>
-          )}
-        </div>
+            </div>
+          ))
+        ) : (
+          <BlogSkeleton />
+        )}
+
+        {content && Object.keys(content).length > 0 && (
+          <div id="editorjs" className={styles.contentWrapper}></div>
+        )}
       </div>
       <Footer />
       <Footer2 />

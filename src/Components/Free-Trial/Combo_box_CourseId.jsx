@@ -40,7 +40,7 @@ const StudentSelect2 = ({
         });
         setOptions(courses);
       } catch (error) {
-        console.error("Error fetching courses:", error.message);
+
       }
     };
 

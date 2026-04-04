@@ -40,7 +40,7 @@ export default function Login() {
         }
       )
       .then((res) => {
-        console.log(res);
+
         if (res.status === 200) {
           setCookie("AccessToken", res.data.token);
           const decodedToken = jwtDecode(res.data.token);
@@ -56,7 +56,7 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        console.log(err);
+
         if (err.response && err.response.status === 500) {
           Swal.fire({
             title: "Error!",
@@ -118,7 +118,7 @@ export default function Login() {
         });
       }
     } catch (err) {
-      console.log(err);
+
       Swal.fire({
         title: "Error!",
         text: "Failed to send confirmation link",
@@ -135,100 +135,88 @@ export default function Login() {
           <div className="loader"></div>
         </div>
       )}
-      <div className={`container ${style.Container}`}>
-        <div className="row py-5 justify-content-center">
-          <div className="col-lg-12 col-md-12 col-sm-12">
-            <div className={`parent ${style.cardBorder} ${style.parent_width}`}>
-              <div className="child mt-5">
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="d-flex flex-column justify-content-center align-items-center"
+      <div className={style.Container}>
+        <div className={style.parent_width}>
+          <div className={style.cardBorder}>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="d-flex flex-column align-items-center"
+            >
+              <h1 className={style.loginTitle}>Login</h1>
+              
+              <input
+                type="text"
+                placeholder="Email Address"
+                className={style.Input}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Enter a valid email address",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-danger mb-3 small w-100">{errors.email.message}</p>
+              )}
+
+              <input
+                type="password"
+                placeholder="Password"
+                className={style.Input}
+                {...register("password", {
+                  required: "Password is required",
+                })}
+              />
+              {errors.password && (
+                <p className="text-danger mb-3 small w-100">{errors.password.message}</p>
+              )}
+
+              <div className={style.forgotText}>
+                <Link
+                  to="/reset-password"
+                  className={style.a_decoration}
                 >
-                  <h1 className="text-center">Login</h1>
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    className={`m-4 ${style.Input}`}
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
-                        message: "Enter a valid email formula",
-                      },
-                    })}
-                  />
-                  {errors.email && (
-                    <p className="text-danger">{errors.email.message}</p>
-                  )}
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className={`m-4 ${style.Input}`}
-                    {...register("password", {
-                      required: "Password is required",
-                    })}
-                  />
-                  {errors.password && (
-                    <p className="text-danger">{errors.password.message}</p>
-                  )}
-                  <Link
-                    to="/reset-password"
-                    className={`text-start ${style.a_decoration}`}
-                  >
-                    Forgot Password ?
-                  </Link>
-                  <div>
-                    <button
-                      type="submit"
-                      className={`m-4 text-center text-decoration-none ${style.login_btn}`}
-                    >
-                      {loading ? (
-                        <div
-                          className="spinner-border text-light"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      ) : (
-                        "Login"
-                      )}
-                    </button>
-                  </div>
-                  <p className="text-center m-3">
-                    Don't have an account ?{" "}
-                    <Link
-                      to="/signup"
-                      className={`${style.a_decoration} text-decoration-none fw-bold`}
-                    >
-                      Sign Up
-                    </Link>
-                  </p>
-                  {confirmationLink && (
-                    <div className="text-center m-3">
-                      We've sent a confirmation email to your address,
-                      <span
-                        className={`${style.a_decoration} text-decoration-none fw-bold`}
-                      >
-                        {email}
-                      </span>
-                      .<br></br> To complete your registration, please click the
-                      confirmation link in the email.<br></br> The email might
-                      have landed in your spam folder, so be sure to check there
-                      as well. <br></br>If you don't see the email within a few
-                      minutes, you can request a new one by
-                      <div
-                        onClick={handleSendConfirmationLink}
-                        className={`${style.a_decoration} text-decoration-none fw-bold`}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {" "}
-                        clicking here.
-                      </div>{" "}
-                    </div>
-                  )}
-                </form>
+                  Forgot Password?
+                </Link>
               </div>
-            </div>
+
+              <button
+                type="submit"
+                className={style.login_btn}
+                disabled={loading}
+              >
+                {loading ? (
+                  <div className="spinner-border spinner-border-sm text-light" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                ) : (
+                  "Login"
+                )}
+              </button>
+
+              <div className={style.footerText}>
+                <span>Don't have an account? </span>
+                <Link to="/signup" className={style.a_decoration}>
+                  Sign Up
+                </Link>
+              </div>
+
+              {confirmationLink && (
+                <div className="text-center mt-4 small border-top pt-3 opacity-90">
+                  We've sent a confirmation email to <strong>{email}</strong>.
+                  <br /> To complete registration, please click the link in your email.
+                  <br /> Check your spam folder if you can't find it.
+                  <div
+                    onClick={handleSendConfirmationLink}
+                    className={`${style.a_decoration} d-inline-block mt-2`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Click here to resend link.
+                  </div>
+                </div>
+              )}
+            </form>
           </div>
         </div>
       </div>

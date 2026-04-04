@@ -1,0 +1,99 @@
+@import url("../../../index.css");
+
+.blogContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 6rem 1rem 4rem;
+}
+
+.heroSection {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: var(--header-text);
+  background: linear-gradient(135deg, var(--text-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.meta b {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.metaDivider {
+  display: inline-block;
+  margin: 0 0.5rem;
+  color: var(--border-color);
+}
+
+.heroImageWrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 3rem;
+  background: rgba(0,0,0,0.05);
+}
+
+.heroImageWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.contentWrapper {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-color);
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* EditorJS Specific overrides */
+.contentWrapper :global(.ce-block__content) {
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+.contentWrapper :global(.ce-paragraph) {
+  color: var(--text-color);
+  font-size: 1.15rem;
+  line-height: 1.8;
+}
+
+.contentWrapper :global(.ce-header) {
+  color: var(--header-text);
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .contentWrapper {
+    padding: 1.5rem;
+  }
+}

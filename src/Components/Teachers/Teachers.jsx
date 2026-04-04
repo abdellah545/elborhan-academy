@@ -25,7 +25,7 @@ export default function Teachers() {
       );
       setTeachers(res.data);
     } catch (error) {
-      console.log(error);
+
     }
   };
   useEffect(() => {
@@ -140,13 +140,13 @@ export default function Teachers() {
               <div className="row">
                 <div className={`col-lg-12 col-md-12 p-5 ${style.bg}`}>
                   {/* <div className="star_images d-flex justify-content-between">
-                    <img src={star__icon} alt="" loading="lazy" />
-                    <img src={star__icon} alt="" loading="lazy" />
-                    <img src={star__icon} alt="" loading="lazy" />
-                    <img src={star__icon} alt="" loading="lazy" />
-                    <img src={star__icon} alt="" loading="lazy" />
-                    <img src={star__icon} alt="" loading="lazy" />
-                    <img src={star__icon} alt="" loading="lazy" />
+                    <img src={star__icon} alt="" />
+                    <img src={star__icon} alt="" />
+                    <img src={star__icon} alt="" />
+                    <img src={star__icon} alt="" />
+                    <img src={star__icon} alt="" />
+                    <img src={star__icon} alt="" />
+                    <img src={star__icon} alt="" />
                   </div> */}
                   <div className="become_a_teacher">
                     <h1 className={`my-5 text-center ${style.font__size}`}>
@@ -163,18 +163,9 @@ export default function Teachers() {
                     <img src={star_icon} alt="" /> */}
                   </div>
                 </div>
-                <div className="col-lg-12 col-md-12 bg-black p-5">
-                  {/* <div className="star_images d-flex justify-content-between">
-                    <img src={star_icon} alt="" loading="lazy" />
-                    <img src={star_icon} alt="" loading="lazy" />
-                    <img src={star_icon} alt="" loading="lazy" />
-                    <img src={star_icon} alt="" loading="lazy" />
-                    <img src={star_icon} alt="" loading="lazy" />
-                    <img src={star_icon} alt="" loading="lazy" />
-                    <img src={star_icon} alt="" loading="lazy" />
-                  </div> */}
-                  <h2 className="fw-bold text-white mb-5 text-center">
-                    <i className="fa-solid fa-clipboard-list me-2 fs-3 text-warning"></i>
+                <div className={`${style.requirementsSection} p-5`}>
+                  <h2 className={`${style.requirementsHeader} text-center`}>
+                    <i className={`fa-solid fa-clipboard-list ${style.requirementsIconHeader}`}></i>
                     Requirements to Join
                   </h2>
                   <div className="row g-4 justify-content-center">
@@ -193,17 +184,17 @@ export default function Teachers() {
                       "CV URL & How did you hear about us"
                     ].map((req, idx) => (
                       <div className="col-lg-6 col-md-12" key={idx}>
-                        <div className="d-flex align-items-center bg-dark p-3 rounded shadow-sm border border-secondary transition-hover">
-                          <i className="fa-solid fa-check-circle text-success fs-4 me-3"></i>
-                          <h6 className="text-white m-0 fs-5">{req}</h6>
+                        <div className={`${style.requirementCard}`}>
+                          <i className={`fa-solid fa-check-circle ${style.requirementIcon}`}></i>
+                          <h6 className={`${style.requirementText}`}>{req}</h6>
                         </div>
                       </div>
                     ))}
                     
-                    <div className="col-lg-12 col-md-12 mt-5 bg-black d-flex justify-content-center">
+                    <div className="col-lg-12 col-md-12 mt-5 d-flex justify-content-center">
                       <Link
                         to="/join-as-teacher"
-                        className="text-black fs-4 fw-bold btn btn-light px-5 py-3 rounded-pill shadow"
+                        className={`${style.joinButton}`}
                         onClick={scrollToTop}
                       >
                         Join As A Teacher Now

@@ -1,90 +1,143 @@
-@import url("../../index.css");
-
 .signUpContainer {
-  width: 50%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  background-color: var(--bg-main);
+  padding: 10px;
 }
 
 .form {
+  width: 100%;
+  max-width: 850px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 15px 45px var(--card-border);
+  border-radius: 32px;
+  padding: 30px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 1px 3px 15px rgba(0, 0, 0, 0.5);
-  padding: 25px;
-  border-radius: 24px;
-  background: white;
+  transition: all 0.3s ease;
 }
 
-.form .inputs {
+:global(html[data-theme="dark"]) .form {
+  background: linear-gradient(145deg, #2b2c3d, #242535);
+}
+
+.signUpTitle {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 25px;
+  text-align: center;
+  letter-spacing: -1.2px;
+}
+
+.inputs {
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .Column {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 5px; /* For labels/errors if added */
 }
 
 .form input {
-  border: 1px solid #383838;
-  border-radius: 10px;
-  width: 300px;
-  height: 50px;
-  padding: 10px;
-  margin: 10px;
-  box-sizing: border-box;
+  width: 100% !important;
+  height: 56px !important;
+  background-color: var(--bg-main) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  padding: 12px 20px !important;
+  font-size: 1.05rem !important;
+  color: var(--text-main) !important;
+  transition: all 0.3s ease !important;
+  margin: 0 0 20px 0 !important;
+  outline: none !important;
+}
+
+.form input:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1) !important;
+}
+
+:global(html[data-theme="dark"]) .form input {
+  background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
 .controlCountry,
 .controlTimezone {
   width: 100%;
-  max-width: 300px;
-  margin: auto;
+  margin-bottom: 20px;
 }
 
 .form button {
-  background: #1a1a1d;
+  width: 220px;
+  height: 56px;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--accent-color);
   color: white;
-  padding: 10px;
-  border-radius: 10px;
-  width: 150px;
+  font-size: 1.2rem;
+  font-weight: 700;
   cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+}
+
+.form button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
 }
 
 .notSure {
-  margin-top: 15px;
-  text-align: center;
+  margin-top: 30px;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.notSure a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.notSure a:hover {
+  text-decoration: underline;
 }
 
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
   .signUpContainer {
-    width: 100%;
-    padding: 20px;
+    padding: 40px 15px;
   }
 
   .form {
-    width: 100%;
+    padding: 40px 25px;
+    border-radius: 24px;
   }
 
-  .form .inputs {
+  .signUpTitle {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+  }
+
+  .inputs {
     flex-direction: column;
-    align-items: center;
+    gap: 0;
   }
 
-  .form input {
+  .form button {
     width: 100%;
-    max-width: 320px;
-  }
-
-  .controlCountry,
-  .controlTimezone {
-    max-width: 320px;
   }
 }

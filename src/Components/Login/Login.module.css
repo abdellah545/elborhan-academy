@@ -1,65 +1,119 @@
-@import url("../../index.css");
-
 .Container {
-  background-color: #f3f3f2;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--bg-main);
+  padding: 10px;
+}
+
+.parent_width {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.cardBorder {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 15px 45px var(--card-border) !important;
+  border-radius: 24px !important;
+  padding: 40px 30px !important;
+  transition: all 0.3s ease;
+}
+
+:global(html[data-theme="dark"]) .cardBorder {
+  background: linear-gradient(145deg, #2b2c3d, #242535) !important;
+}
+
+.loginTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: -1px;
 }
 
 .Input {
   width: 100%;
-  max-width: 350px;
-  height: 50px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 15px;
-  font-size: 20px;
-  box-sizing: border-box;
+  height: 56px;
+  background-color: var(--bg-main) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  padding: 12px 20px !important;
+  font-size: 1.1rem !important;
+  color: var(--text-main) !important;
+  transition: all 0.3s ease !important;
+  margin-bottom: 20px !important;
+  outline: none !important;
 }
 
 .Input:focus {
-  outline: none;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1) !important;
+}
+
+:global(html[data-theme="dark"]) .Input {
+  background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
 .login_btn {
-  width: 170px;
-  border-radius: 25px;
-  border: 1px solid #ccc;
-  padding: 15px;
-  font-size: 22px;
-  background-color: #1a1a1d;
-  color: #f3f3f2;
+  width: 100%;
+  height: 56px;
+  border-radius: 12px !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  background-color: var(--accent-color) !important;
+  color: white !important;
   cursor: pointer;
-  display: block;
-  margin: 0 auto;
-  box-sizing: border-box;
+  margin-top: 10px !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2) !important;
+}
+
+.login_btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3) !important;
+  filter: brightness(1.1);
+}
+
+.login_btn:active {
+  transform: translateY(0);
 }
 
 .a_decoration {
-  text-decoration: none;
-  color: #1a1a1d;
+  text-decoration: none !important;
+  color: var(--accent-color) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease;
 }
 
-.cardBorder {
-  box-shadow: 0px 5px 20px 1px gray;
-  border: none;
-  border-radius: 15px;
-  padding: 10px;
-  box-sizing: border-box;
+.a_decoration:hover {
+  filter: brightness(1.2);
+  text-decoration: underline !important;
+}
+
+.forgotText {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.footerText {
+  margin-top: 25px;
+  color: var(--text-muted);
+  font-size: 1rem;
 }
 
 @media (max-width: 576px) {
-  .Container .row {
-    padding-left: 12px;
-    padding-right: 12px;
+  .cardBorder {
+    padding: 30px 20px !important;
   }
-
-  .Input {
-    font-size: 18px;
-  }
-
-  .login_btn {
-    font-size: 20px;
+  
+  .loginTitle {
+    font-size: 2rem;
   }
 }

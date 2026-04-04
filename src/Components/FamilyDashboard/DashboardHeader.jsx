@@ -1,118 +1,134 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axiosinterceptor from "../../authComponent/axiosinterceptor";
-import { jwtDecode } from "jwt-decode";
-import { deleteCookie, getCookie } from "../../Helper/CookieHelper";
-import baseURL from "../../BaseURL/BaseURL";
-import "animate.css"
+import React, { memo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { getCookie, deleteCookie } from "../../Helper/CookieHelper";
+import style from "./Dashboard.module.css";
 
-export default function DashboardHeader() {
-  const [isFound, setIsFound] = useState(false);
+/**
+ * DashboardHeader — Premium glassmorphic top navigation
+ * Memoised to prevent re-renders from parent state changes.
+ */
+const DashboardHeader = memo(function DashboardHeader({ hasPaymentAlert = false }) {
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dropOpen, setDropOpen] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await axiosinterceptor.get(
-        `${baseURL}/Family/PaymentReport`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      if (res.data) {
-        setIsFound(true);
-      }
-    }
-    fetchData();
-  }, []);
+  const fullName = getCookie("Full_Name") || "Family";
+  const initials = fullName
+    .split(" ")
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+
   const handleLogout = () => {
     sessionStorage.removeItem("AccessToken");
     deleteCookie("refreshToken");
     deleteCookie("AccessToken");
     deleteCookie("Full_Name");
-
-    window.location.pathname = "";
+    window.location.pathname = "/";
   };
 
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-  return (
-    <>
-      <header className={`bg-black text-white sticky-top`}>
-        <nav class="navbar navbar-expand-lg">
-          <div class="container-fluid">
-            <Link
-              className="navbar-brand text-light"
-              onClick={scrollToTop}
-              to=""
-            >
-              El-burhan Academy |
-            </Link>
-            <span className="navbar-brand text-light">Family Dashboard</span>
-            <button
-              class="navbar-toggler bg-light"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <div
-                class="btn-group m-auto gap-2"
-                role="group"
-                aria-label="Basic example"
-              >
-                <Link to="/FamilyDashboard" type="button" class="btn btn-dark">
-                  Family Report
-                </Link>
+  const navLinks = [
+    { to: "/FamilyDashboard", label: "Family Report", icon: "fa-chart-bar" },
+    { to: "/payment-report", label: "Payments", icon: "fa-credit-card", badge: hasPaymentAlert },
+  ];
 
-                <Link to="/payment-report" type="button" class="btn btn-dark">
-                  Payment Report
-                  {isFound && (
-                    <span className="animate__animated animate__flash animate__infinite animate__slow position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                      <span className="visually-hidden">New alerts</span>
-                    </span>
-                  )}
-                </Link>
-              </div>
-              <form class="d-flex">
-                <div class="dropdown">
-                  <button
-                    class="btn bg-dark text-white dropdown-toggle mx-5 my-sm-2 text-capitalize"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {getCookie("Full_Name")}
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <Link class="dropdown-item" to="/FamilyDashboard/profile">
-                        My Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <Link class="dropdown-item" to="/" onClick={handleLogout}>
-                        Logout
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </form>
+  return (
+    <header className={style.header}>
+      {/* Brand */}
+      <Link to="/" className={style.headerBrand}>
+        <span className={style.headerBrandLogo}>El-Burhan</span>
+        <span className={style.headerBrandSep}>|</span>
+        <span className={style.headerBrandLabel}>Family Dashboard</span>
+      </Link>
+
+      {/* Desktop Nav */}
+      <nav className={`${style.headerNav} ${menuOpen ? style.open : ""}`}>
+        {navLinks.map(({ to, label, icon, badge }) => {
+          const isActive = location.pathname === to;
+          return (
+            <Link
+              key={to}
+              to={to}
+              className={`${style.headerNavLink} ${isActive ? style.headerNavLinkActive : ""}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              <i className={`fa-solid ${icon} me-1`} />
+              {label}
+              {badge && <span className={style.payBadge} aria-label="Payment alert" />}
+            </Link>
+          );
+        })}
+
+        {/* User Dropdown */}
+        <div className={style.userMenu}>
+          <button
+            className={style.userMenuBtn}
+            onClick={() => setDropOpen((v) => !v)}
+            aria-expanded={dropOpen}
+            aria-haspopup="true"
+          >
+            <span className={style.userAvatar} aria-hidden="true">{initials}</span>
+            <span>{fullName}</span>
+            <i className={`fa-solid fa-chevron-${dropOpen ? "up" : "down"}`} style={{ fontSize: "0.7rem", opacity: 0.6 }} />
+          </button>
+
+          {dropOpen && (
+            <div className={style.userDropdown} role="menu">
+              <Link
+                to="/FamilyDashboard/profile"
+                className={style.userDropdownItem}
+                onClick={() => setDropOpen(false)}
+                role="menuitem"
+              >
+                <i className="fa-solid fa-user" style={{ width: 16, opacity: 0.7 }} />
+                My Profile
+              </Link>
+              <Link
+                to="/FamilyDashboard/updateProfile"
+                className={style.userDropdownItem}
+                onClick={() => setDropOpen(false)}
+                role="menuitem"
+              >
+                <i className="fa-solid fa-pen-to-square" style={{ width: 16, opacity: 0.7 }} />
+                Update Profile
+              </Link>
+              <Link
+                to="/FamilyDashboard/ChangePassword"
+                className={style.userDropdownItem}
+                onClick={() => setDropOpen(false)}
+                role="menuitem"
+              >
+                <i className="fa-solid fa-lock" style={{ width: 16, opacity: 0.7 }} />
+                Change Password
+              </Link>
+              <hr className={style.userDropdownSep} />
+              <button
+                className={`${style.userDropdownItem} ${style.danger}`}
+                onClick={handleLogout}
+                role="menuitem"
+              >
+                <i className="fa-solid fa-right-from-bracket" style={{ width: 16, opacity: 0.7 }} />
+                Logout
+              </button>
             </div>
-          </div>
-        </nav>
-      </header>
-    </>
+          )}
+        </div>
+      </nav>
+
+      {/* Mobile hamburger */}
+      <button
+        className={style.mobileToggle}
+        onClick={() => setMenuOpen((v) => !v)}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuOpen}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+    </header>
   );
-}
+});
+
+export default DashboardHeader;

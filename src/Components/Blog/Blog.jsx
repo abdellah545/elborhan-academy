@@ -25,6 +25,14 @@ export default function Blog() {
 
   useEffect(() => {
     const getBlogs = () => {
+      // ⚠️ DEV MODE BYPASS: Preventing ERR_NAME_NOT_RESOLVED
+      setBlogs([{ blogId: 1, blogName: "Understanding Tajweed", blogImageUrl: "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=400&q=80", blogDescription: "A deep dive into the rules of Tajweed and how to perfect your Quranic recitation." }, { blogId: 2, blogName: "The Importance of Arabic Language", blogImageUrl: "https://images.unsplash.com/photo-1560087701-a6e50efecae8?auto=format&fit=crop&w=400&q=80", blogDescription: "Why learning Arabic is essential for understanding Islamic texts deeply." }, { blogId: 3, blogName: "Stories of the Prophets", blogImageUrl: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=400&q=80", blogDescription: "Fascinating lessons from Islamic history and the lives of the Prophets." }]);
+      setblogNames(["Understanding Tajweed", "The Importance of Arabic Language", "Stories of the Prophets"]);
+      setblogImages(["https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=400&q=80", "https://images.unsplash.com/photo-1560087701-a6e50efecae8?auto=format&fit=crop&w=400&q=80", "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=400&q=80"]);
+      setblogIDs([1, 2, 3]);
+      setblogDesc(["A deep dive into the rules of Tajweed and how to perfect your Quranic recitation.", "Why learning Arabic is essential for understanding Islamic texts deeply.", "Fascinating lessons from Islamic history and the lives of the Prophets."]);
+      return;
+      /*
       axios
         .get(`${baseURL}/Blog/GetAllBlogs`, {
           headers: {
@@ -34,12 +42,9 @@ export default function Blog() {
         })
         .then((response) => {
           if (response === null) {
-            console.log("response is null");
+
           } else {
             const received = response.data;
-            console.log(received);
-            console.log(response.data[0].blogId);
-
             setBlogs(received);
             const names = [];
             const images = [];
@@ -47,10 +52,6 @@ export default function Blog() {
             const Desc = [];
 
             received.forEach((item) => {
-
-
-
-
               names.push(item.blogName);
               images.push(item.blogImageUrl);
               IDs.push(item.blogId);
@@ -60,17 +61,13 @@ export default function Blog() {
             setblogImages(images);
             setblogIDs(IDs);
             setblogDesc(Desc);
-
-            console.log("after data was got", names);
-            console.log("after data was got", images);
-            console.log("after data was got", IDs);
-            console.log("after data was got", Desc);
           }
         });
+      */
     };
 
     getBlogs();
-  }, []); // Empty array means this effect runs once on mount
+  }, []);
 
   // Calculate total pages
   // Change page
@@ -129,21 +126,18 @@ if (startIndex < 1) {
 
   return (
     <>
-      <section className="blog mt-5">
-        <div className={`${style.title} m-auto`}>
-          <h1 className="text-center fw-bold">Featured Articles</h1>
-          <p className="text-center fs-3">
-            We’re a leading Academy for learning and teaching online. Explore
-            some of our most popular content and learn something new.
+      <section className={style.pageWrapper}>
+        <div className={style.title}>
+          <h1>Featured Articles</h1>
+          <p>
+            Exploring the cutting-edge insights and updates on our blog.
+            Explore some of our most popular content and learn something new.
           </p>
-          <p className="text-center fs-3">
-            Exploring the cutting-edge insights and updates on our blog
-          </p>
-          <hr className="w-25 mx-auto" />
+          <hr />
         </div>
-        <div className="blog_content mt-5 pt-5">
-          <div className="container">
-            <div className="row">
+        
+        <div className="container mt-5">
+          <div className="row g-4 justify-content-center">
               {currentBlogs.length > 0 ? (
                 currentBlogs.map((blog, index) => (
                   <BlogCard
@@ -155,13 +149,12 @@ if (startIndex < 1) {
                   />
                 ))
               ) : (
-                <>
-                  <h1 className="text-center">No blogs found</h1>
-                </>
+                <div className="col-12 text-center text-muted py-5">
+                  <h2>No blogs found</h2>
+                </div>
               )}
             </div>
           </div>
-        </div>
       </section>
 
       <div className={style.pagination}>

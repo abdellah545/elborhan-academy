@@ -5,7 +5,7 @@ import { getCookie } from "../Helper/CookieHelper";
 axios.interceptors.request.use(
   (config) => {
     const accessToken = getCookie("AccessToken");
-    console.log("this is token", accessToken);
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
