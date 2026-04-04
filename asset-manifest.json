@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/elborhan-academy/static/css/main.3de42da0.css",
-    "main.js": "/elborhan-academy/static/js/main.48ca129e.js",
+    "main.js": "/elborhan-academy/static/js/main.b89c7114.js",
     "static/css/823.b165679e.chunk.css": "/elborhan-academy/static/css/823.b165679e.chunk.css",
     "static/js/823.927e7af4.chunk.js": "/elborhan-academy/static/js/823.927e7af4.chunk.js",
     "static/css/10.9772478a.chunk.css": "/elborhan-academy/static/css/10.9772478a.chunk.css",
@@ -110,7 +110,7 @@
     "static/media/oldReports.svg": "/elborhan-academy/static/media/oldReports.3172d48a5fa1e323c9e76711228f003d.svg",
     "static/media/3en.svg": "/elborhan-academy/static/media/3en.19e03d32f4affa3284d659c0898434ec.svg",
     "main.3de42da0.css.map": "/elborhan-academy/static/css/main.3de42da0.css.map",
-    "main.48ca129e.js.map": "/elborhan-academy/static/js/main.48ca129e.js.map",
+    "main.b89c7114.js.map": "/elborhan-academy/static/js/main.b89c7114.js.map",
     "823.b165679e.chunk.css.map": "/elborhan-academy/static/css/823.b165679e.chunk.css.map",
     "823.927e7af4.chunk.js.map": "/elborhan-academy/static/js/823.927e7af4.chunk.js.map",
     "10.9772478a.chunk.css.map": "/elborhan-academy/static/css/10.9772478a.chunk.css.map",
@@ -178,6 +178,6 @@
   },
   "entrypoints": [
     "static/css/main.3de42da0.css",
-    "static/js/main.48ca129e.js"
+    "static/js/main.b89c7114.js"
   ]
 }
