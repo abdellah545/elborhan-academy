@@ -3,50 +3,28 @@ import { Link, useLocation } from "react-router-dom";
 import axiosinterceptor from "../../authComponent/axiosinterceptor";
 import { TimezoneOptions } from "./newData";
 import baseURL from "../../BaseURL/BaseURL";
-import s from "./Dashboard.module.css";
+import style from "./Dashboard.module.css";
+import ProfileTabs from "./ProfileTabs";
 
 // ⚠️ DEV MODE: Toggle this to true to see fake data while backend is down
 const USE_FAKE_DATA = true;
 
-/* ── shared profile nav sub-tabs ── */
-const PROFILE_TABS = [
-  { to: "/FamilyDashboard/profile",        label: "Profile",          icon: "fa-user" },
-  { to: "/FamilyDashboard/updateProfile",  label: "Edit Profile",     icon: "fa-pen-to-square" },
-  { to: "/FamilyDashboard/updateEmail",    label: "Change Email",     icon: "fa-envelope" },
-  { to: "/FamilyDashboard/ChangePassword", label: "Change Password",  icon: "fa-lock" },
-];
-
-function ProfileTabs() {
-  const { pathname } = useLocation();
-  return (
-    <nav style={css.tabs}>
-      {PROFILE_TABS.map(({ to, label, icon }) => (
-        <Link
-          key={to}
-          to={to}
-          style={{ ...css.tab, ...(pathname === to ? css.tabActive : {}) }}
-        >
-          <i className={`fa-solid ${icon}`} style={{ fontSize: "0.8rem" }} />
-          {label}
-        </Link>
-      ))}
-    </nav>
-  );
-}
-
-function InfoRow({ label, value, icon }) {
-  return (
-    <div style={css.infoRow}>
-      <div style={css.infoLabel}>
-        <i className={`fa-solid ${icon}`} style={css.infoIcon} />
-        {label}
-      </div>
-      <div style={css.infoValue}>{value || <span style={{ opacity: 0.35 }}>—</span>}</div>
+const InfoRow = ({ label, value, icon }) => (
+  <div className={style.infoRow}>
+    <div className={style.infoLabel}>
+      <i className={`fa-solid ${icon} ${style.infoIcon}`} />
+      {label}
     </div>
-  );
-}
+    <div className={style.infoValue}>
+      {value || <span className={style.textMuted}>—</span>}
+    </div>
+  </div>
+);
 
-const tzLabels = TimezoneOptions.reduce((a, c) => { a[c.value] = c.label; return a; }, {});
+const tzLabels = TimezoneOptions.reduce((a, c) => {
+  a[c.value] = c.label;
+  return a;
+}, {});
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -59,51 +37,69 @@ export default function Profile() {
         email: "parent@example.com",
         whatsAppNumber: "+201012345678",
         country: "Egypt",
-        timeZone: "UTC"
+        timeZone: "UTC",
       });
       setLoading(false);
       return;
     }
 
     try {
-      const res = await axiosinterceptor.get(`${baseURL}/Family/GetFamilyprofile`);
+      const res = await axiosinterceptor.get(
+        `${baseURL}/Family/GetFamilyprofile`,
+      );
       setProfile(res.data);
     } catch (err) {
-
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => { fetchProfile(); }, [fetchProfile]);
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const initials = profile?.name
-    ? profile.name.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase()
+    ? profile.name
+        .split(" ")
+        .slice(0, 2)
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()
     : "?";
 
   return (
-    <div style={css.page}>
-      <div style={css.card}>
-        {/* Avatar */}
-        <div style={css.avatarWrap}>
-          <div style={css.avatar}>{initials}</div>
-          <div>
-            <h1 style={css.name}>{profile?.name || "—"}</h1>
-            <p style={css.email}>{profile?.email || "—"}</p>
+    <div className={style.pageWrapper}>
+      <div className={style.profileCard}>
+        {/* Avatar Section */}
+        <div className={style.profileHeader}>
+          <div className={style.profileAvatar}>{initials}</div>
+          <div className={style.profileTitleContainer}>
+            <h1 className={style.profileName}>{profile?.name || "—"}</h1>
+            <p className={style.profileEmail}>{profile?.email || "—"}</p>
           </div>
         </div>
 
         <ProfileTabs />
 
         {loading ? (
-          <div style={css.loadingWrap}><div className={s.spinner} /></div>
+          <div className={style.spinnerCenter}>
+            <div className={style.spinner} />
+          </div>
         ) : (
-          <div style={css.infoGrid}>
-            <InfoRow label="Full Name"       value={profile?.name}            icon="fa-user" />
-            <InfoRow label="Email"           value={profile?.email}           icon="fa-envelope" />
-            <InfoRow label="WhatsApp"        value={profile?.whatsAppNumber}  icon="fa-whatsapp brands" />
-            <InfoRow label="Country"         value={profile?.country}         icon="fa-globe" />
-            <InfoRow label="Timezone"        value={tzLabels[profile?.timeZone]} icon="fa-clock" />
+          <div className={style.infoGrid}>
+            <InfoRow label="Full Name" value={profile?.name} icon="fa-user" />
+            <InfoRow label="Email" value={profile?.email} icon="fa-envelope" />
+            <InfoRow
+              label="WhatsApp"
+              value={profile?.whatsAppNumber}
+              icon="fa-whatsapp brands"
+            />
+            <InfoRow label="Country" value={profile?.country} icon="fa-globe" />
+            <InfoRow
+              label="Timezone"
+              value={tzLabels[profile?.timeZone]}
+              icon="fa-clock"
+            />
           </div>
         )}
       </div>
@@ -115,7 +111,7 @@ export default function Profile() {
 const css = {
   page: {
     minHeight: "calc(100vh - 68px)",
-    background: "#0f0f1a",
+    background: "#2F3E46",
     padding: "2rem 1rem",
     display: "flex",
     flexDirection: "column",
@@ -140,7 +136,7 @@ const css = {
     width: 68,
     height: 68,
     borderRadius: 16,
-    background: "linear-gradient(135deg, #f172b6, #7c6aff)",
+    background: "#2F3E46",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -185,8 +181,8 @@ const css = {
     transition: "all 0.15s ease",
   },
   tabActive: {
-    background: "rgba(241,114,182,0.15)",
-    color: "#f172b6",
+    background: "rgba(82,121,111,0.15)",
+    color: "#52796f",
     fontWeight: 700,
   },
   loadingWrap: {
@@ -219,7 +215,7 @@ const css = {
     fontWeight: 600,
   },
   infoIcon: {
-    color: "#7c6aff",
+    color: "#52796f",
     width: 16,
     textAlign: "center",
   },

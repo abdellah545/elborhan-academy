@@ -1,51 +1,31 @@
 import React from "react";
-
-const styles = {
-  main: {
-    backgroundColor: "transparent" /* Make it white if you need */,
-    padding: "0 24px",
-    margin: "0",
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontFamily:
-      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-  },
-  container: {
-    fontFamily: "Arial, sans-serif",
-    backgroundColor: "#f5f5dc", // faded beige background
-    color: "#333",
-    textAlign: "center",
-    border: "1px solid #ccc",
-    padding: "50px",
-    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-    backgroundColor: "white",
-    borderRadius: "8px",
-    margin: "auto",
-    maxWidth: "500px",
-  },
-  header: {
-    color: "#f44336",
-  },
-};
+import style from "./Dashboard.module.css";
+import { Link } from "react-router-dom";
 
 const PaymentFailure = () => {
   return (
-    <main style={styles.main}>
-      <div style={styles.container}>
-        <h2 style={styles.header}>Payment Unsuccessful ❌</h2>
-        <p>
-          We encountered an issue with your payment attempt. Please ensure your
-          payment information is correct and try again.
+    <div className={style.statusPageContainer}>
+      <div className={style.statusCard}>
+        <span className={style.statusIcon}>❌</span>
+        <h2 className={style.statusTitle} style={{ color: "#f87171" }}>Payment Unsuccessful</h2>
+        <p className={style.statusText}>
+          We encountered an issue with your payment attempt.<br />
+          Please ensure your payment information is correct and try again.
+          <br /><br />
+          Need help? Contact us at<br />
+          <strong style={{ color: "#fff" }}>support@elburhanacademy.com</strong>
         </p>
-        <p>
-          If you continue to experience issues, please contact El-Burhan
-          Academy’s support team at <b>support@elburhanacademy.com</b>.
-        </p>
-        <p> We are here to help!</p>
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+          <Link to="/payment-report" className={style.statusActionBtn} style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)" }}>
+            Try Again
+          </Link>
+          <Link to="/FamilyDashboard" className={style.statusActionBtn}>
+            <i className="fa-solid fa-house" />
+            Go Home
+          </Link>
+        </div>
       </div>
-    </main>
+    </div>
   );
 };
 

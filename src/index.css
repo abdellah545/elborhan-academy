@@ -16,7 +16,7 @@
   --border-color: #dee2e6;
   --btn-light-bg: #f8f9fa;
   --btn-light-text: #000000;
-  --card-border: rgba(0,0,0,0.08);
+  --card-border: rgba(0, 0, 0, 0.08);
   --header-bg: #ffffff;
   --accent-color: #007bff;
 }
@@ -30,9 +30,9 @@ html[data-theme="dark"] {
   --border-color: #3f4055;
   --btn-light-bg: #3f4055;
   --btn-light-text: #ffffff;
-  --card-border: rgba(255,255,255,0.08);
+  --card-border: rgba(255, 255, 255, 0.08);
   --header-bg: #1e1d2b;
-  --accent-color: #f172b6; 
+  --accent-color: #f172b6;
 }
 
 body {
@@ -41,7 +41,9 @@ body {
   color: var(--text-main) !important;
   position: relative;
   overflow-x: hidden;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   min-height: 100vh;
 }
 
@@ -51,12 +53,14 @@ html[data-theme="light"] header img[src$=".svg"] {
 }
 
 /* Global Theme Overrides with Maximum Specificity */
-html[data-theme="dark"] body .card, 
+html[data-theme="dark"] body .card,
 html[data-theme="dark"] body div[class*="card"] {
   background-color: var(--card-bg) !important;
   color: var(--text-main) !important;
   border-color: var(--card-border) !important;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Force ALL text to be light in dark mode, overcoming module CSS */
@@ -108,10 +112,10 @@ html[data-theme="dark"] body .bg-light,
 html[data-theme="dark"] body .bg-white,
 html[data-theme="dark"] body .bg-black,
 html[data-theme="dark"] body .bg-dark,
-html[data-theme="dark"] body section, 
+html[data-theme="dark"] body section,
 html[data-theme="dark"] body div[class*="bg-"],
 html[data-theme="dark"] body div[class*="bg_"] {
-  background-color: transparent !important; 
+  background-color: transparent !important;
 }
 
 /* Re-enforce card background in case previous rule caught it */
@@ -137,7 +141,7 @@ html[data-theme="dark"] .dropdown-menu,
 html[data-theme="dark"] .dropdown-menu.dropdown-menu-light {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--border-color) !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
 html[data-theme="dark"] .dropdown-item {
@@ -146,7 +150,7 @@ html[data-theme="dark"] .dropdown-item {
 }
 
 html[data-theme="dark"] .dropdown-item:hover {
-  background-color: rgba(255,255,255,0.08) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
   color: var(--text-main) !important;
 }
 
@@ -177,8 +181,8 @@ html[data-theme="dark"] body img[src*="Kid.svg"] {
 
 /* 6. Navbar Login/Signup buttons in Dark Mode */
 html[data-theme="dark"] body button[class*="login"] {
-  background-color: #f26c6c !important; 
-  color: #ffffff !important; 
+  background-color: #f26c6c !important;
+  color: #ffffff !important;
   border-color: #f26c6c !important;
 }
 
@@ -192,7 +196,7 @@ html[data-theme="dark"] body button[class*="signup"] {
 html[data-theme="dark"] body div[class*="__desc"] {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--card-border) !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
 }
 
 html[data-theme="dark"] body div[class*="__desc"] h5 {
@@ -201,7 +205,7 @@ html[data-theme="dark"] body div[class*="__desc"] h5 {
 
 /* Global Font Size Adjustments for Responsiveness */
 html {
-  font-size: 15px; 
+  font-size: 15px;
   scroll-behavior: smooth;
 }
 
@@ -224,17 +228,35 @@ html {
 }
 
 /* Better Headings Scaling */
-h1 { font-size: 2.25rem !important; }
-h2 { font-size: 1.8rem !important; }
-h3 { font-size: 1.5rem !important; }
-h4 { font-size: 1.25rem !important; }
-h5 { font-size: 1.1rem !important; }
-h6 { font-size: 1rem !important; }
+h1 {
+  font-size: 2.25rem !important;
+}
+h2 {
+  font-size: 1.8rem !important;
+}
+h3 {
+  font-size: 1.5rem !important;
+}
+h4 {
+  font-size: 1.25rem !important;
+}
+h5 {
+  font-size: 1.1rem !important;
+}
+h6 {
+  font-size: 1rem !important;
+}
 
 @media (max-width: 768px) {
-  h1 { font-size: 1.9rem !important; }
-  h2 { font-size: 1.5rem !important; }
-  h3 { font-size: 1.35rem !important; }
+  h1 {
+    font-size: 1.9rem !important;
+  }
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  h3 {
+    font-size: 1.35rem !important;
+  }
 }
 
 /* Ensure images never exceed container width and scale gracefully */
@@ -245,12 +267,14 @@ img {
 }
 
 /* Restrict extremely large images globally */
-section img:not([class*='logo']) {
+section img:not([class*="logo"]) {
   max-height: 500px;
 }
 
 /* Light Animations & Transitions */
-a, button, .btn {
+a,
+button,
+.btn {
   transition: all 0.3s ease-in-out !important;
 }
 
