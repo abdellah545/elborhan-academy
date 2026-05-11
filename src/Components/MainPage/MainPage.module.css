@@ -46,7 +46,11 @@
 }
 
 .outer_border {
-  background: linear-gradient(135deg, rgba(86, 117, 184, 0.4), rgba(242, 108, 124, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(86, 117, 184, 0.4),
+    rgba(242, 108, 124, 0.4)
+  );
   padding: 3px !important; /* Thinner border to look more elegant */
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
   border-radius: 18px;
@@ -175,12 +179,13 @@
 
 /* Light gradient background in dark mode to make the illustration pop out */
 :global(html[data-theme="dark"]) .heroImg {
-  filter: brightness(1.3) contrast(1.05) drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.1));
+  filter: brightness(1.3) contrast(1.05)
+    drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.1));
   background: radial-gradient(
-    circle, 
-    rgba(255, 255, 255, 0.3) 0%, 
-    rgba(241, 114, 182, 0.15) 25%, 
-    rgba(0, 123, 255, 0.05) 40%, 
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(241, 114, 182, 0.15) 25%,
+    rgba(0, 123, 255, 0.05) 40%,
     transparent 55%
   );
   padding: 10px;

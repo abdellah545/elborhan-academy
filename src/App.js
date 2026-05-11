@@ -8,12 +8,12 @@ import baseURL from "./BaseURL/BaseURL";
 
 import {
   RouterProvider,
-  createBrowserRouter,
+  createHashRouter,
 } from "react-router-dom";
 
 // Lazy-loaded components
 const Layout = lazy(() => import("./Components/Layout/Layout"));
-const MianPage = lazy(() => import("./Components/MainPage/MianPage"));
+const MainPage = lazy(() => import("./Components/MainPage/MainPage"));
 const Login = lazy(() => import("./Components/Login/Login"));
 const Blog = lazy(() => import("./Components/Blog/Blog"));
 const Teachers = lazy(() => import("./Components/Teachers/Teachers"));
@@ -81,12 +81,12 @@ function App() {
     loginWithRefreshToken();
   }, []);
 
-  let router = createBrowserRouter([
+  let router = createHashRouter([
     {
       path: "",
       element: <Layout />,
       children: [
-        { path: "", element: <MianPage /> },
+        { path: "", element: <MainPage /> },
         { path: "/login", element: <Login /> },
         { path: "/reset-password", element: <ResetPassword /> },
         { path: "/signup", element: <SignUp /> },

@@ -22,31 +22,47 @@ const formatDuration = (minutes) => {
  * Gets initials from student name
  */
 const getInitials = (name = "") =>
-  name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase() || "?";
+  name
+    .split(" ")
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase() || "?";
 
 /**
  * Single child card — memoised to avoid re-renders when siblings update
  */
-const ChildCard = memo(function ChildCard({ child, index, onViewSessions, isLoadingSessions }) {
+const ChildCard = memo(function ChildCard({
+  child,
+  index,
+  onViewSessions,
+  isLoadingSessions,
+}) {
   const subjects = child.subjectsAverageRating || [];
 
   return (
     <div className={style.childCard}>
       {/* Header row */}
       <div className={style.childCardHeader}>
-        <div className={style.childAvatar}>{getInitials(child.studentName)}</div>
-        <p className={style.childName}>{child.studentName || `Student ${index + 1}`}</p>
-        <span className={`${style.childStatusBadge} ${child.isActive ? style.active : style.inactive}`}>
+        <div className={style.childAvatar}>
+          {getInitials(child.studentName)}
+        </div>
+        <p className={style.childName}>
+          {child.studentName || `Student ${index + 1}`}
+        </p>
+        <span
+          className={`${style.childStatusBadge} ${child.isActive ? style.active : style.inactive}`}
+        >
           <i className={`fa-solid fa-circle fa-2xs`} />
           {child.isActive ? "Active" : "Inactive"}
         </span>
       </div>
 
       {/* Payment warning */}
-      <div className={`${style.payWarning} ${child.isActive ? style.noPay : style.mustPay}`}>
-        {child.isActive
-          ? "✓ No payment due"
-          : "⚠ Payment required"}
+      <div
+        className={`${style.payWarning} ${child.isActive ? style.noPay : style.mustPay}`}
+      >
+        {child.isActive ? "✓ No payment due" : "⚠ Payment required"}
       </div>
 
       {/* Stats grid */}
@@ -59,11 +75,15 @@ const ChildCard = memo(function ChildCard({ child, index, onViewSessions, isLoad
         </div>
         <div className={style.childStatItem}>
           <div className={style.childStatLabel}>Sessions</div>
-          <div className={style.childStatValue}>{child.numberOfSessions ?? 0}</div>
+          <div className={style.childStatValue}>
+            {child.numberOfSessions ?? 0}
+          </div>
         </div>
         <div className={style.childStatItem}>
           <div className={style.childStatLabel}>Total Time</div>
-          <div className={style.childStatValue}>{formatDuration(child.totalMinutes)}</div>
+          <div className={style.childStatValue}>
+            {formatDuration(child.totalMinutes)}
+          </div>
         </div>
         <div className={style.childStatItem}>
           <div className={style.childStatLabel}>Total Cost</div>
@@ -138,8 +158,8 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
           subjectsAverageRating: [
             { subject: "Quran", averageRating: 4.9 },
             { subject: "Islamic", averageRating: 4.5 },
-            { subject: "Arabic", averageRating: 5.0 }
-          ]
+            { subject: "Arabic", averageRating: 5.0 },
+          ],
         },
         {
           studentId: 2,
@@ -152,31 +172,34 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
           subjectsAverageRating: [
             { subject: "Quran", averageRating: 4.1 },
             { subject: "Islamic", averageRating: 4.4 },
-            { subject: "Arabic", averageRating: 4.0 }
-          ]
-        }
+            { subject: "Arabic", averageRating: 4.0 },
+          ],
+        },
       ]);
       setLoading(false);
       return;
     }
 
     try {
-      const listRes = await axiosinterceptor.get(`${baseURL}/Family/GetStudents`, {
-        withCredentials: true,
-      });
+      const listRes = await axiosinterceptor.get(
+        `${baseURL}/Family/GetStudents`,
+        {
+          withCredentials: true,
+        },
+      );
 
       const detailed = await Promise.all(
         listRes.data.map(async (student) => {
           try {
             const detailRes = await axiosinterceptor.get(
               `${baseURL}/Family/StudentReport/${student.studentId}`,
-              { withCredentials: true }
+              { withCredentials: true },
             );
             return { ...student, ...detailRes.data };
           } catch {
             return student;
           }
-        })
+        }),
       );
 
       setChildrenList(detailed);
@@ -202,7 +225,7 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
             params: { Name: data.childName },
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-          }
+          },
         );
 
         if (res.status === 200) {
@@ -212,7 +235,7 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
             title: "Child added successfully",
             showConfirmButton: false,
             timer: 3000,
-            background: "#1a1a2e",
+            background: "#354F52",
             color: "#fff",
           });
           reset();
@@ -224,19 +247,20 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: typeof msg === "string" && msg.includes("Already Exist")
-            ? "Student already exists"
-            : "Something went wrong",
+          title:
+            typeof msg === "string" && msg.includes("Already Exist")
+              ? "Student already exists"
+              : "Something went wrong",
           showConfirmButton: false,
           timer: 3000,
-          background: "#1a1a2e",
+          background: "#354F52",
           color: "#fff",
         });
       } finally {
         setLoading(false);
       }
     },
-    [fetchAllStudents, reset]
+    [fetchAllStudents, reset],
   );
 
   return (
@@ -259,7 +283,11 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
 
       {/* Add child form */}
       {showAddForm && (
-        <form className={style.addChildForm} onSubmit={handleSubmit(onAddChild)} noValidate>
+        <form
+          className={style.addChildForm}
+          onSubmit={handleSubmit(onAddChild)}
+          noValidate
+        >
           <input
             id="childName"
             type="text"
@@ -286,14 +314,18 @@ export default function SideBar({ onViewSessions, isLoadingSessions }) {
 
       {/* Loading state */}
       {loading && childrenList.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "3rem 1rem", opacity: 0.5 }}>
+        <div
+          style={{ textAlign: "center", padding: "3rem 1rem", opacity: 0.5 }}
+        >
           <div className={style.spinner} style={{ margin: "0 auto 1rem" }} />
           <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
             Loading children…
           </p>
         </div>
       ) : childrenList.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "3rem 1rem", opacity: 0.5 }}>
+        <div
+          style={{ textAlign: "center", padding: "3rem 1rem", opacity: 0.5 }}
+        >
           <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>👨‍👩‍👧‍👦</div>
           <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)" }}>
             No children added yet

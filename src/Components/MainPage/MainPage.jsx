@@ -17,18 +17,21 @@ import axios from "axios";
 import CountUp from "react-countup";
 import "animate.css";
 
-export default function MianBage() {
+export default function MainPage() {
   const [teachers, setTeachers] = useState([]);
   const [startCounting, setStartCounting] = useState(false);
   const [isDark, setIsDark] = useState(
-    document.documentElement.getAttribute("data-theme") === "dark"
+    document.documentElement.getAttribute("data-theme") === "dark",
   );
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.getAttribute("data-theme") === "dark");
     });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
     return () => observer.disconnect();
   }, []);
 
@@ -68,9 +71,7 @@ export default function MianBage() {
       );
       setTeachers(Array.isArray(res.data) ? res.data : []);
       */
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -342,18 +343,19 @@ export default function MianBage() {
           <div className="row justify-content-center">
             <div className="col-lg-12">
               <div id="carouselExampleIndicators" className="carousel slide">
-
-
-
                 <div
                   className={`carousel-inner text-center ${style.cardBorder}`}
                 >
                   <div className="carousel-item active">
-                    <div className={`card p-5 ${style.cardBorder} border-0 shadow-sm`}>
+                    <div
+                      className={`card p-5 ${style.cardBorder} border-0 shadow-sm`}
+                    >
                       <div className="card-body text-center py-5">
                         <i className="fa-solid fa-comments fs-1 text-secondary mb-3"></i>
                         <h5 className="text-muted fs-4">Coming Soon</h5>
-                        <p className="text-muted">We are collecting our customers' reviews. Stay tuned!</p>
+                        <p className="text-muted">
+                          We are collecting our customers' reviews. Stay tuned!
+                        </p>
                       </div>
                     </div>
                   </div>
