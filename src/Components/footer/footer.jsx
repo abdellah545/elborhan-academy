@@ -144,16 +144,16 @@ const Footer = () => {
               <div className="row mt-4">
                 <div className="col-12">
                   <div className={style.socialIcons}>
-                    <a href="#" style={{ color: "#EE1D51" }}>
+                    <a href="#!" style={{ color: "#EE1D51" }}>
                       <i className="fa-brands fa-tiktok"></i>
                     </a>
-                    <a href="#" style={{ color: "#3b5998" }}>
+                    <a href="#!" style={{ color: "#3b5998" }}>
                       <i className="fa-brands fa-facebook-square"></i>
                     </a>
-                    <a href="#" style={{ color: "#CD201F" }}>
+                    <a href="#!" style={{ color: "#CD201F" }}>
                       <i className="fa-brands fa-youtube"></i>
                     </a>
-                    <a href="#" style={{ color: "#3949AB" }}>
+                    <a href="#!" style={{ color: "#3949AB" }}>
                       <i className="fa-brands fa-instagram"></i>
                     </a>
                   </div>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardHeader from "../FamilyDashboard/DashboardHeader";
-import { Outlet, Link, useLocation } from "react-router-dom";
-import axiosinterceptor from "../../authComponent/axiosinterceptor";
-import baseURL from "../../BaseURL/BaseURL";
+import { Outlet } from "react-router-dom";
 import style from "../FamilyDashboard/Dashboard.module.css";
 import DevNavBar from "../DevNavBar";
 

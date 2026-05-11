@@ -1,6 +1,5 @@
 import scholarShipsStyles from "./Scholarships.module.css";
 import MainImg from "../../assets/scholarShipsAssets/ScholarshipsImg.svg";
-import SecondaryImg from "../../assets/scholarShipsAssets/ScholarshipSmallicon.svg";
 import Footer from "../footer/footer";
 import Footer2 from "../Footer2/Footer2";
 import emptyWallet from "../../assets/scholarShipsAssets/empty-wallet.svg"

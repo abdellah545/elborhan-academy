@@ -1,4 +1,3 @@
-import style from "./MainDetailed.module.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CardStyles from "./MainDetailed.module.css";

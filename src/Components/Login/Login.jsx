@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./Login.module.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { setCookie } from "../../Helper/CookieHelper";
-import { ProgressBar } from "react-bootstrap";
 import baseURL from "../../BaseURL/BaseURL";
 import "../ProgressBar/ProgressBar.css";
 // ============================================ New validation with react-hook-form ===========================
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import ChangeEmail from "./../FamilyDashboard/ChangeEmail";
 
 export default function Login() {
   const {

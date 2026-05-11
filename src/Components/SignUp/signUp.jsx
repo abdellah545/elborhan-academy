@@ -34,7 +34,6 @@ const SignUp = () => {
   }, []);
 
   const password = watch("password");
-  const email = watch("email");
 
   /* ================= MODERN SELECT STYLE (Matching JoinAsTeacher) ================= */
   const comboStyles = {

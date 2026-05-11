@@ -1,6 +1,5 @@
 import qualityContentStyles from "./Qualitycontent.module.css";
 import MainImg from "../../assets/QualitycontentAssets/Medal.svg";
-import SecondaryImg from "../../assets/QualitycontentAssets/Jewel.svg";
 import Footer from "../footer/footer";
 import Footer2 from "../Footer2/Footer2";
 import educatedTutors from "../../assets/QualitycontentAssets/educatedTutors.svg";

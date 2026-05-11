@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
+import React, { useState, useEffect, useCallback } from "react";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import SimpleImage from "@editorjs/simple-image";
 import List from "@editorjs/list";
 import Table from "@editorjs/table";
 import Embed from "@editorjs/embed";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BlogSkeleton from "./SpecificBlogSkeleton";
 import styles from "./EachBlog.module.css";
 import Footer from "../../footer/footer";
-import baseURL from "../../../BaseURL/BaseURL";
 import Footer2 from "../../Footer2/Footer2";
 
 const TheCourse = () => {
-  const navigate = useNavigate();
   const { blogID } = useParams();
-  const removeSaltFromID = (encodedID) => {
-    const decodedID = atob(encodedID); // Decoding Base64
-    const parts = decodedID.split(".");
-    const originalID = parts[0];
-    return originalID;
-  };
+
 
   function formatDate(isoDateString) {
     const date = new Date(isoDateString);
@@ -39,8 +30,8 @@ const TheCourse = () => {
   const [content, setContent] = useState({});
   const [receivedResponse, setReceivedResponse] = useState({});
   const [titleLanguage, setTitleLanguage] = useState("");
-  const getBlog = () => {
-    const originalID = removeSaltFromID(blogID); // Removing salt from the salted ID
+  const getBlog = useCallback(() => {
+    // const originalID = removeSaltFromID(blogID); // Removing salt from the salted ID
 
     // ⚠️ DEV MODE BYPASS: Preventing ERR_NAME_NOT_RESOLVED
     const fakeContent = {
@@ -100,14 +91,10 @@ const TheCourse = () => {
         }
       })
       .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
+        console.log(error);
       });
     */
-  };
+  }, [blogID]);
 
   const getDirection = (text) => {
     const arabicRegex = /[\u0600-\u06FF]/;
@@ -116,7 +103,7 @@ const TheCourse = () => {
 
   useEffect(() => {
     getBlog(); // Call getBlog when the component mounts
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [getBlog]); // Added getBlog as dependency
 
   useEffect(() => {
     if (content && document.getElementById("editorjs")) {
@@ -139,6 +126,7 @@ const TheCourse = () => {
 
       document.getElementById("courseName").style.direction = titleLanguage;
 
+      // eslint-disable-next-line no-unused-vars
       const editor = new EditorJS({
         holder: "editorjs",
         readOnly: true,
@@ -159,7 +147,7 @@ const TheCourse = () => {
         },
       });
     }
-  }, [content]);
+  }, [content, titleLanguage]); // Added titleLanguage to dependencies
 
   return (
     <>

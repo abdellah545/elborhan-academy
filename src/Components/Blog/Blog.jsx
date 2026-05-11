@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import BlogCard from "./BlogCard";
-import Blogskeleton from "./BlogSkeleton";
 import Footer from "../footer/footer";
 import Footer2 from "../Footer2/Footer2";
 import style from "./Blog.module.css";
-import baseURL from "../../BaseURL/BaseURL";
 import { usePagination } from './Pagination-hook(custom)';
 
 export default function Blog() {
@@ -15,7 +12,7 @@ export default function Blog() {
   const [blogDesc, setblogDesc] = useState([]);
   const [blogIDs, setblogIDs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [blogsPerPage, setBlogsPerPage] = useState(9); // Adjust this number as needed
+  const [blogsPerPage] = useState(9); // Adjust this number as needed
   const paginationRange = usePagination({
     currentPage,
     totalCount: blogs.length, // Assuming blogs is the array holding all your blogs

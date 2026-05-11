@@ -1,18 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../footer/footer";
 import style from "./JoinAsTeacher.module.css";
 import layerImage from "./Form-Assets/Layer 37.png";
-import { Link } from "react-router-dom";
-import { Form, Row, Col } from "react-bootstrap";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import { Languages } from "./Data";
 import Swal from "sweetalert2";
 import axios from "axios";
 import baseURL from "../../BaseURL/BaseURL";
 
-const animatedComponents = makeAnimated();
+// const animatedComponents = makeAnimated();
 
 const GenderOptions = [
   { value: "MALE", label: "Male" },
@@ -70,8 +67,8 @@ export default function JoinAsTeacher() {
 
   const [languageLevels, setLanguageLevels] = useState({});
   const [ijazahEnabled, setIjazahEnabled] = useState(false);
-  const [ijazah, setIjazah] = useState("");
-  const ijazahRef = useRef();
+  // const [ijazah, setIjazah] = useState("");
+  // const ijazahRef = useRef();
   const [loading, setLoading] = useState(false);
 
   // Theme-aware styles for React-Select
@@ -172,7 +169,7 @@ export default function JoinAsTeacher() {
     const value = e.target.value;
     setIjazahEnabled(value === "yes");
     if (value === "no") {
-      setIjazah("");
+      // setIjazah("");
     }
   };
 

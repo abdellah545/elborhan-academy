@@ -6,34 +6,20 @@ import { Link } from "react-router-dom";
 import islamicIcon from "../../assets/islamic.svg";
 import quranIcon from "../../assets/quran.svg";
 import arabicIcon from "../../assets/3en.svg";
-import kidDarkImg from "../../assets/illustration_dark_mode.svg";
 import kid2 from "../../assets/Kid2.svg";
 import stat1 from "../../assets/Layer 12.png";
 import stat2 from "../../assets/Layer 13.png";
 import stat3 from "../../assets/Layer 14.png";
 import stat4 from "../../assets/Layer 15.png";
 import Footer2 from "../Footer2/Footer2";
-import axios from "axios";
 import CountUp from "react-countup";
 import "animate.css";
 
 export default function MainPage() {
   const [teachers, setTeachers] = useState([]);
   const [startCounting, setStartCounting] = useState(false);
-  const [isDark, setIsDark] = useState(
-    document.documentElement.getAttribute("data-theme") === "dark",
-  );
 
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.getAttribute("data-theme") === "dark");
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-    return () => observer.disconnect();
-  }, []);
+
 
   useEffect(() => {
     const section = document.getElementById("statistics");

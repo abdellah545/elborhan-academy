@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import style from "./MainDetailed.module.css";
 import Card from "./Card";
 import axios from "axios";
-import CourseSkeleton from "./CourseSkeleton";
 import baseURL from "../../BaseURL/BaseURL";
 export default function MainDetailed(props) {
   const [courses, setCourses] = useState([]);
@@ -51,7 +50,7 @@ export default function MainDetailed(props) {
     };
 
     getCourses();
-  }, []);
+  }, [props.category]);
 
   return (
     <>

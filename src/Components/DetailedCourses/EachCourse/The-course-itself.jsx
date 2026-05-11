@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import EditorJS from "@editorjs/editorjs";
@@ -17,12 +17,12 @@ import Footer2 from "../../Footer2/Footer2";
 
 const TheCourse = () => {
   const {courseID} = useParams();
-  const removeSaltFromID = (encodedID) => {
+  const removeSaltFromID = useCallback((encodedID) => {
     const decodedID = atob(encodedID); // Decoding Base64
     const parts = decodedID.split(".");
     const originalID = parts[0];
     return originalID;
-  };
+  }, []);
   const [courses, setCourses] = useState([]);
   const [content, setContent] = useState({});
   const [titleLanguage, setTitleLanguage] = useState("");
@@ -32,7 +32,7 @@ const TheCourse = () => {
     const arabicRegex = /[\u0600-\u06FF]/;
     return arabicRegex.test(text) ? "rtl" : "ltr";
   };
-  const getCourses = () => {
+  const getCourses = useCallback(() => {
     const originalID = removeSaltFromID(courseID); // Removing salt from the salted ID
 
     axios
@@ -61,7 +61,6 @@ const TheCourse = () => {
             
           const unescapedCoursecontent = received.content
             .replace(/\\\\/g, "\\")
-           
 
 
           const originalContent = JSON.parse(unescapedCoursecontent);
@@ -83,11 +82,11 @@ const TheCourse = () => {
           text: "Something went wrong!",
         });
       });
-  };
+  }, [courseID, removeSaltFromID]);
 
   useEffect(() => {
-    getCourses(); // Call getCourses when the component mounts
-  }, []); // Empty dependency array means this effect runs once on mount
+    getCourses();
+  }, [getCourses]);
 
   useEffect(() => {
     if (content && document.getElementById("editorjs")) {
@@ -110,6 +109,7 @@ const TheCourse = () => {
 
 
 
+      // eslint-disable-next-line no-unused-vars
       const editor = new EditorJS({
         holder: "editorjs",
         readOnly: true,
@@ -127,7 +127,7 @@ const TheCourse = () => {
                 coub: true,
                 codepen: {
                   regex:
-                    /https?:\/\/codepen.io\/([^\/\?\&]*)\/pen\/([^\/\?\&]*)/,
+                    /https?:\/\/codepen.io\/([^/?&]*)\/pen\/([^/?&]*)/,
                   embedUrl:
                     "https://codepen.io/<%= remote_id %>?height=300&theme-id=0&default-tab=css,result&embed-version=2",
                   html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
@@ -141,7 +141,7 @@ const TheCourse = () => {
         },
       });
     }
-  }, [content]);
+  }, [content, titleLanguage]); // Added titleLanguage to dependencies
 
   return (
     <>

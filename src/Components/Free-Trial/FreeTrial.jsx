@@ -170,7 +170,7 @@ export default function FreeTrial() {
       : "";
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${baseURL}/FreeTrail/AddFreeTrail`,
         data,
         {
