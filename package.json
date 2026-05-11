@@ -2,7 +2,7 @@
   "name": "elborhan-academy",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://abdellah545.github.io/elborhan-academy/",
+  "homepage": ".",
   "dependencies": {
     "@editorjs/editorjs": "^2.29.1",
     "@editorjs/embed": "^2.7.1",
